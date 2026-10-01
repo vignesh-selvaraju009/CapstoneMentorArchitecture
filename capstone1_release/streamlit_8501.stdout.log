@@ -11,3 +11,4 @@
 [ERROR] `max_pixels` is part of PaddleOCRVLImageProcessorKwargs, but not documented. Make sure to add it to the docstring of the function in C:\Users\Vignesh.Selvaraju\AppData\Local\Programs\Python\Python312\Lib\site-packages\transformers\models\paddleocr_vl\image_processing_pil_paddleocr_vl.py.
 [ERROR] `min_pixels` is part of PaddleOCRVLImageProcessorKwargs, but not documented. Make sure to add it to the docstring of the function in C:\Users\Vignesh.Selvaraju\AppData\Local\Programs\Python\Python312\Lib\site-packages\transformers\models\paddleocr_vl\image_processing_pil_paddleocr_vl.py.
 [ERROR] `max_pixels` is part of PaddleOCRVLImageProcessorKwargs, but not documented. Make sure to add it to the docstring of the function in C:\Users\Vignesh.Selvaraju\AppData\Local\Programs\Python\Python312\Lib\site-packages\transformers\models\paddleocr_vl\image_processing_pil_paddleocr_vl.py.
+  Stopping...
