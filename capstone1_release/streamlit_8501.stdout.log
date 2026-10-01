@@ -5,3 +5,9 @@
   Network URL: http://192.168.1.8:8501
   External URL: http://122.168.65.93:8501
 
+[ERROR] `high_res_size` is part of DeepseekVLHybridImageProcessorKwargs, but not documented. Make sure to add it to the docstring of the function in C:\Users\Vignesh.Selvaraju\AppData\Local\Programs\Python\Python312\Lib\site-packages\transformers\models\deepseek_vl_hybrid\image_processing_pil_deepseek_vl_hybrid.py.
+[ERROR] `high_res_size` is part of DeepseekVLHybridImageProcessorKwargs, but not documented. Make sure to add it to the docstring of the function in C:\Users\Vignesh.Selvaraju\AppData\Local\Programs\Python\Python312\Lib\site-packages\transformers\models\deepseek_vl_hybrid\image_processing_pil_deepseek_vl_hybrid.py.
+[ERROR] `min_pixels` is part of PaddleOCRVLImageProcessorKwargs, but not documented. Make sure to add it to the docstring of the function in C:\Users\Vignesh.Selvaraju\AppData\Local\Programs\Python\Python312\Lib\site-packages\transformers\models\paddleocr_vl\image_processing_pil_paddleocr_vl.py.
+[ERROR] `max_pixels` is part of PaddleOCRVLImageProcessorKwargs, but not documented. Make sure to add it to the docstring of the function in C:\Users\Vignesh.Selvaraju\AppData\Local\Programs\Python\Python312\Lib\site-packages\transformers\models\paddleocr_vl\image_processing_pil_paddleocr_vl.py.
+[ERROR] `min_pixels` is part of PaddleOCRVLImageProcessorKwargs, but not documented. Make sure to add it to the docstring of the function in C:\Users\Vignesh.Selvaraju\AppData\Local\Programs\Python\Python312\Lib\site-packages\transformers\models\paddleocr_vl\image_processing_pil_paddleocr_vl.py.
+[ERROR] `max_pixels` is part of PaddleOCRVLImageProcessorKwargs, but not documented. Make sure to add it to the docstring of the function in C:\Users\Vignesh.Selvaraju\AppData\Local\Programs\Python\Python312\Lib\site-packages\transformers\models\paddleocr_vl\image_processing_pil_paddleocr_vl.py.

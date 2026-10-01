@@ -18,7 +18,8 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass, field
-from typing import Any
+from pathlib import Path
+from typing import Any, cast
 
 from openai import APIError, OpenAI
 
@@ -38,6 +39,10 @@ VALID_CATEGORIES = {
     "Edge",
 }
 VALID_PRIORITIES = {"High", "Medium", "Low"}
+
+
+def _new_assertions() -> list[str]:
+    return []
 
 
 class LLMGenerationError(Exception):
@@ -67,7 +72,7 @@ class TestCase:
     category: str
     expected_status: int
     expected_response: Any
-    assertions: list[str] = field(default_factory=list)
+    assertions: list[str] = field(default_factory=_new_assertions)
 
 
 def _to_test_case(raw: dict[str, Any]) -> TestCase:
@@ -95,14 +100,20 @@ def _to_test_case(raw: dict[str, Any]) -> TestCase:
     )
 
 
-def _load_json_entries(path, list_key: str) -> list[dict[str, Any]]:
+def _load_json_entries(path: Path | str, list_key: str) -> list[dict[str, Any]]:
     try:
         with open(path, encoding="utf-8") as fh:
-            data = json.load(fh)
+            data: Any = json.load(fh)
     except (OSError, json.JSONDecodeError) as exc:
         logger.warning("Could not load fallback knowledge base file %s: %s", path, exc)
         return []
-    return data.get(list_key, [])
+    source: dict[str, Any] = cast(dict[str, Any], data) if isinstance(data, dict) else {}
+    entries: list[Any] = cast(list[Any], source.get(list_key, []))
+    valid_entries: list[dict[str, Any]] = []
+    for entry in entries:
+        if isinstance(entry, dict):
+            valid_entries.append(cast(dict[str, Any], cast(Any, entry)))
+    return valid_entries
 
 
 def _pattern_to_test_case(entry: dict[str, Any]) -> TestCase:

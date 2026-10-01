@@ -1,4 +1,4 @@
-"""Streamlit front end for the Intelligent API Test Suite Generator.
+"""Streamlit front end for CapstoneMentorArchitecture.
 
 Two pages only:
 1. Data Ingestion - upload a test-case dataset, route it into the knowledge
@@ -14,17 +14,16 @@ Streamlit session state.
 """
 from __future__ import annotations
 
-import json
 import tempfile
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import streamlit as st
 
 from config import settings
 from generators.postman_generator import generate_postman_collection
 from generators.pytest_generator import generate_pytest_suite
-from knowledge_base.dataset_ingestion import ingest_dataset, knowledge_base_counts
+from knowledge_base.dataset_ingestion import knowledge_base_counts
 from llm.llm_generator import LLMGenerationError, LLMGenerator, TestCase
 from llm.prompt_builder import build_feedback_notes, build_prompt
 from parser.openapi_parser import Endpoint, OpenAPIParseError, ParsedSpec, parse_spec
@@ -53,7 +52,7 @@ logger = get_logger(__name__)
 
 
 def _init_session_state() -> None:
-    defaults = {
+    defaults: dict[str, Any] = {
         "parsed_spec": None,
         "spec_name": "",
         "spec_source": "",
@@ -137,7 +136,7 @@ def render_dashboard() -> None:
                     [
                         {
                             "Spec": r["spec_name"],
-                            "Test cases": len(r["data"]) if isinstance(r["data"], list) else 0,
+                            "Test cases": len(cast(list[Any], r["data"])) if isinstance(r["data"], list) else 0,
                             "Generated at": format_timestamp(r["timestamp"]),
                         }
                         for r in recent_generated
@@ -230,7 +229,7 @@ def render_data_ingestion() -> None:
 
             # The existing OpenAPI parser remains the authoritative parser for
             # API specifications; the result is normalized into the same common model.
-            normalized = normalize_generic(
+            normalized: Any = normalize_generic(
                 raw_document,
                 document_id=document_id,
                 document_type=classification,
@@ -247,7 +246,7 @@ def render_data_ingestion() -> None:
             status.update(label="Connecting to MongoDB and storing document...")
             from ingestion.mongo_document_tool import MongoDocumentRepository, DocumentUnderstandingTool
 
-            repository = MongoDocumentRepository()
+            repository: MongoDocumentRepository = MongoDocumentRepository()
             repository.ping()
             repository.save_document(
                 document_id,
@@ -270,7 +269,7 @@ def render_data_ingestion() -> None:
             status.write(f"✅ Document chunked ({len(chunks)} chunks)")
 
             understanding_tool = DocumentUnderstandingTool(repository)
-            understanding_result = understanding_tool.understand(document_id)
+            understanding_result: dict[str, Any] = understanding_tool.understand(document_id)
             status.write("✅ Structure analyzed")
 
             status.update(label="Embedding chunks and updating vector index...")
@@ -278,7 +277,7 @@ def render_data_ingestion() -> None:
 
             vector_store = DocumentVectorStore()
             # MongoDB is the source of truth for the vector build.
-            all_chunks = repository.get_all_chunks()
+            all_chunks: list[dict[str, Any]] = repository.get_all_chunks()
             vector_store.build(all_chunks)
             vector_store.save()
             status.write("✅ Embeddings generated")
@@ -327,8 +326,10 @@ def render_data_ingestion() -> None:
 
             with st.expander("Vector information"):
                 st.write(f"**Embedding model:** {vector_store.model_name}")
-                st.write(f"**Vector dimension:** {vector_store.index.d}")
-                st.write(f"**Total vectors in index:** {vector_store.index.ntotal}")
+                index = vector_store.index
+                if index is not None:
+                    st.write(f"**Vector dimension:** {index.d}")
+                    st.write(f"**Total vectors in index:** {index.ntotal}")
 
         except Exception as exc:  # noqa: BLE001 - UI boundary
             logger.exception("Data ingestion failed")
@@ -357,18 +358,18 @@ def _generate_tests_for_endpoint(endpoint: Endpoint, api_key: str) -> tuple[list
     entries = store.query(endpoint_summary, top_k=10)
     patterns, security, boundary = _partition_entries(entries)
     feedback_notes = build_feedback_notes(storage.get_feedback())
-    retrieved_document_chunks = []
+    retrieved_document_chunks: list[dict[str, Any]] = []
     try:
         from ingestion.document_vector_store import DocumentVectorStore
 
-        document_store = DocumentVectorStore()
+        document_store: DocumentVectorStore = DocumentVectorStore()
         retrieved_document_chunks = document_store.query(endpoint_summary, top_k=5)
     except (FileNotFoundError, RuntimeError, ValueError):
         # Existing local knowledge-base retrieval remains available even when
         # the new Mongo/vector layer has not been configured yet.
         pass
 
-    common_context = {
+    common_context: dict[str, Any] = {
         "endpoint": endpoint.path,
         "http_method": endpoint.method,
         "operation_id": endpoint.operation_id,
@@ -464,7 +465,7 @@ def render_test_case_generator() -> None:
                 classification = classify_document(raw_for_mongo, Path(source).suffix.lower())
                 from ingestion.mongo_document_tool import MongoDocumentRepository, DocumentUnderstandingTool
 
-                repository = MongoDocumentRepository()
+                repository: MongoDocumentRepository = MongoDocumentRepository()
                 normalized = normalize_openapi(spec, document_id, classification)
                 repository.save_document(
                     document_id, Path(source).name, classification,
@@ -702,11 +703,11 @@ def render_test_case_generator() -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Intelligent API Test Suite Generator", layout="wide", page_icon="🧪")
+    st.set_page_config(page_title="CapstoneMentorArchitecture", layout="wide", page_icon="🧪")
     _init_session_state()
     inject_global_styles()
     render_app_header(
-        "Intelligent API Test Suite Generator",
+        "CapstoneMentorArchitecture",
         "AI-powered API test generation and intelligent document ingestion",
     )
 

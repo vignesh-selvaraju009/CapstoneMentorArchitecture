@@ -17,7 +17,7 @@ def _xml_to_dict(element):
             result[child.tag].append(value)
         else: result[child.tag]=value
     return {element.tag:result}
-def parse_file(path):
+def parse_file(path: str) -> Any:
     p=Path(path); ext=p.suffix.lower(); parser=load_ingestion_config().get("parsers",{}).get(ext)
     if parser=="structured":
         text=p.read_text(encoding="utf-8")
@@ -25,7 +25,7 @@ def parse_file(path):
     if parser=="xml": return _xml_to_dict(ET.parse(p).getroot())
     if parser=="text": return p.read_text(encoding="utf-8",errors="replace")
     raise ValueError(f"Unsupported document extension: {ext}")
-def classify_document(document, extension):
+def classify_document(document: Any, extension: str) -> str:
     rules=load_ingestion_config().get("classification",{})
     text=json.dumps(document,ensure_ascii=False).lower() if not isinstance(document,str) else document.lower()
     for rule in rules.get("rules",[]):

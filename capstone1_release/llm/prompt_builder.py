@@ -7,6 +7,7 @@ No UI code lives here.
 from __future__ import annotations
 
 import json
+from typing import Any, cast
 
 from knowledge_base.vector_store import KnowledgeEntry
 from utils.helpers import get_logger
@@ -54,7 +55,7 @@ def build_prompt(
     boundary_values: list[KnowledgeEntry],
     feedback_notes: list[str] | None = None,
     common_document_context: object | None = None,
-    retrieved_document_chunks: list[dict] | None = None,
+    retrieved_document_chunks: list[dict[str, Any]] | None = None,
 ) -> str:
     """Build the full LLM prompt for one endpoint.
 
@@ -114,7 +115,7 @@ def build_prompt(
     return prompt
 
 
-def build_feedback_notes(feedback_data: dict) -> list[str]:
+def build_feedback_notes(feedback_data: dict[str, Any]) -> list[str]:
     """Distill ``knowledge_base/historical_feedback.json`` into short guidance notes.
 
     Kept intentionally simple: summarizes counts and the most recent modified/
@@ -136,7 +137,7 @@ def build_feedback_notes(feedback_data: dict) -> list[str]:
     return notes
 
 
-def parse_llm_json_response(raw_response: str) -> list[dict]:
+def parse_llm_json_response(raw_response: str) -> list[dict[str, Any]]:
     """Parse the LLM's raw text response into a list of test-case dicts.
 
     Strips common wrapping artifacts (markdown code fences) before parsing.
@@ -154,7 +155,8 @@ def parse_llm_json_response(raw_response: str) -> list[dict]:
     except json.JSONDecodeError as exc:
         raise ValueError(f"LLM response is not valid JSON: {exc}") from exc
 
-    if not isinstance(data, list):
+    parsed_items = cast(list[Any], data) if isinstance(data, list) else []
+    if not isinstance(data, list) or not all(isinstance(item, dict) for item in parsed_items):
         raise ValueError("LLM response must be a JSON array of test case objects")
 
-    return data
+    return [cast(dict[str, Any], item) for item in parsed_items]
