@@ -1,0 +1,206 @@
+{
+  "accepted_extensions": [
+    ".json",
+    ".yaml",
+    ".yml",
+    ".xml",
+    ".txt",
+    ".pdf",
+    ".docx"
+  ],
+  "parsers": {
+    ".json": "structured",
+    ".yaml": "structured",
+    ".yml": "structured",
+    ".xml": "xml",
+    ".txt": "text",
+    ".pdf": "text",
+    ".docx": "text"
+  },
+  "classification": {
+    "rules": [
+      {
+        "name": "api_specification",
+        "signals": [
+          "openapi",
+          "swagger",
+          "paths",
+          "components",
+          "securityDefinitions",
+          "servers"
+        ]
+      },
+      {
+        "name": "test_knowledge",
+        "signals": [
+          "test",
+          "test_case",
+          "expected_status",
+          "assertions",
+          "boundary",
+          "security"
+        ]
+      },
+      {
+        "name": "backend_document",
+        "signals": [
+          "endpoint",
+          "request",
+          "response",
+          "schema",
+          "parameter"
+        ]
+      }
+    ],
+    "default": "backend_document",
+    "api_document_classification": "api_specification"
+  },
+  "chunking": {
+    "strategy": "structure_aware",
+    "max_characters": 1800,
+    "overlap_characters": 200,
+    "preserve_parent_context": true
+  },
+  "embedding": {
+    "provider": "sentence_transformers",
+    "model": "BAAI/bge-small-en-v1.5",
+    "normalize": true
+  },
+  "common_document_model": {
+    "fields": [
+      "document_id",
+      "document_type",
+      "service_name",
+      "service_description",
+      "version",
+      "base_url",
+      "endpoint",
+      "http_method",
+      "operation_id",
+      "summary",
+      "description",
+      "path_parameters",
+      "query_parameters",
+      "header_parameters",
+      "request_body",
+      "request_schema",
+      "response_schema",
+      "response_status",
+      "authentication",
+      "required_fields",
+      "optional_fields",
+      "data_type",
+      "default_value",
+      "allowed_values",
+      "example_values",
+      "constraints",
+      "dependencies",
+      "relationships",
+      "business_rules"
+    ],
+    "mapping_aliases": {
+      "service_name": [
+        "service_name",
+        "service",
+        "name",
+        "title"
+      ],
+      "service_description": [
+        "service_description",
+        "description",
+        "summary"
+      ],
+      "version": [
+        "version",
+        "api_version"
+      ],
+      "endpoint": [
+        "endpoint",
+        "path",
+        "url",
+        "route"
+      ],
+      "http_method": [
+        "http_method",
+        "method",
+        "verb"
+      ],
+      "operation_id": [
+        "operation_id",
+        "operationId",
+        "operation"
+      ],
+      "summary": [
+        "summary",
+        "title"
+      ],
+      "description": [
+        "description",
+        "details"
+      ],
+      "authentication": [
+        "authentication",
+        "auth",
+        "security",
+        "securitySchemes"
+      ],
+      "request_body": [
+        "request_body",
+        "requestBody",
+        "request"
+      ],
+      "response_schema": [
+        "response_schema",
+        "responseSchema",
+        "response"
+      ],
+      "response_status": [
+        "response_status",
+        "status_code",
+        "status",
+        "statusCode"
+      ],
+      "required_fields": [
+        "required_fields",
+        "required"
+      ],
+      "optional_fields": [
+        "optional_fields",
+        "optional"
+      ],
+      "data_type": [
+        "data_type",
+        "type",
+        "schema_type"
+      ],
+      "default_value": [
+        "default_value",
+        "default"
+      ],
+      "allowed_values": [
+        "allowed_values",
+        "enum",
+        "allowed"
+      ],
+      "example_values": [
+        "example_values",
+        "examples",
+        "example"
+      ],
+      "constraints": [
+        "constraints",
+        "validation",
+        "rules"
+      ],
+      "dependencies": [
+        "dependencies",
+        "depends_on"
+      ],
+      "business_rules": [
+        "business_rules",
+        "businessRules",
+        "rules"
+      ]
+    }
+  }
+}

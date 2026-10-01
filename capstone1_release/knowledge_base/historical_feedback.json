@@ -1,0 +1,893 @@
+{
+  "approved": [
+    {
+      "title": "[Offline Fallback] Injection via headers",
+      "description": "Submit script/command injection payloads (e.g. XSS, CRLF injection) in header values. Verify they are rejected or sanitized, not reflected unescaped. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T08:18:50.351358+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Valid payload creates/updates resource",
+      "description": "Send a fully valid request body. Expect the documented success status code (200/201/204) and, where applicable, a response body matching the schema. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "Medium",
+      "category": "Happy Path",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T09:58:51.945980+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Malformed or missing required fields in request body",
+      "description": "Omit a required field, or send a field with the wrong type. Expect 400 Bad Request with a validation error message. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Negative",
+      "expected_status": 400,
+      "expected_response": "Response matches documented behavior for status 400.",
+      "assertions": [
+        "Response status code is 400",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T09:59:38.133207+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Unsupported Content-Type",
+      "description": "Send the request body with an unsupported Content-Type header (e.g. text/plain instead of application/json). Expect 400 or 415. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Negative",
+      "expected_status": 400,
+      "expected_response": "Response matches documented behavior for status 400.",
+      "assertions": [
+        "Response status code is 400",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:00:01.672605+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Boundary values for numeric parameters",
+      "description": "Test minimum, maximum, zero, and negative values for integer/number parameters and fields. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "Medium",
+      "category": "Boundary",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:00:05.535592+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Boundary values for string length",
+      "description": "Test empty string, single character, and max-length (and one-over-max-length) strings for string fields. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "Medium",
+      "category": "Boundary",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:00:11.203118+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Missing authentication",
+      "description": "Call the endpoint without any Authorization header/credentials. Expect 401 Unauthorized. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 401,
+      "expected_response": "Response matches documented behavior for status 401.",
+      "assertions": [
+        "Response status code is 401",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:00:16.669212+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Insufficient permissions",
+      "description": "Call the endpoint with valid credentials that lack the required scope/role. Expect 403 Forbidden. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 403,
+      "expected_response": "Response matches documented behavior for status 403.",
+      "assertions": [
+        "Response status code is 403",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:00:32.591315+00:00"
+    },
+    {
+      "title": "[Offline Fallback] SQL injection payload",
+      "description": "Submit a classic SQL injection payload (e.g. \"' OR '1'='1\") in string parameters/fields. Expect the request to be rejected (400) or safely handled, never a 500 or data leak. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 400,
+      "expected_response": "Response matches documented behavior for status 400.",
+      "assertions": [
+        "Response status code is 400",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:01:02.788280+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Response schema validation",
+      "description": "Validate that the response body matches the documented JSON schema for the given status code (required fields present, correct types). (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "Medium",
+      "category": "Schema",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:01:27.550403+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Access another user's object by ID",
+      "description": "Attempt to access/modify a resource belonging to another user by changing the path/query ID while authenticated as a different user. Expect 403/404, never the other user's data. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 403,
+      "expected_response": "Response matches documented behavior for status 403.",
+      "assertions": [
+        "Response status code is 403",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:01:44.208603+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Expired or malformed token",
+      "description": "Send an expired, tampered, or malformed auth token. Expect 401 Unauthorized. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 401,
+      "expected_response": "Response matches documented behavior for status 401.",
+      "assertions": [
+        "Response status code is 401",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:01:50.471295+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Mass assignment of restricted fields",
+      "description": "Include extra/restricted fields (e.g. role, isAdmin) in a create/update payload that the client should not be able to set. Verify they are ignored or rejected, not silently applied. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:02:06.643191+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Excessive pagination / payload size",
+      "description": "Request an extremely large page size or oversized request body. Expect the API to cap/reject rather than degrade or crash. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:02:18.333925+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Access admin-only endpoint as regular user",
+      "description": "Call an admin/privileged endpoint using a regular user's credentials. Expect 403 Forbidden. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 403,
+      "expected_response": "Response matches documented behavior for status 403.",
+      "assertions": [
+        "Response status code is 403",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:02:27.747478+00:00"
+    },
+    {
+      "title": "[Offline Fallback] SSRF via user-supplied URL",
+      "description": "If the endpoint accepts a URL (e.g. webhook, avatar fetch), supply an internal/loopback address and verify the server does not fetch it. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:02:41.252626+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Verbose error messages",
+      "description": "Trigger a server error (e.g. invalid input) and verify the response does not leak stack traces, internal paths, or framework versions. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:03:03.448004+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Injection via headers",
+      "description": "Submit script/command injection payloads (e.g. XSS, CRLF injection) in header values. Verify they are rejected or sanitized, not reflected unescaped. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 200,
+      "expected_response": "Response matches documented behavior for status 200.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:03:21.190199+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Classic SQL injection strings",
+      "description": "Submit payloads such as \"' OR '1'='1\", \"'; DROP TABLE users; --\" in string fields/parameters. Expect safe rejection, never a 500 error or unexpected data exposure. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 500,
+      "expected_response": "Response matches documented behavior for status 500.",
+      "assertions": [
+        "Response status code is 500",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:03:33.580087+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Rate limit enforcement",
+      "description": "Burst requests beyond documented rate limits. Expect 429 Too Many Requests with a Retry-After header where documented. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:03:47.497752+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Rate limit enforcement",
+      "description": "Burst requests beyond documented rate limits. Expect 429 Too Many Requests with a Retry-After header where documented. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:03:50.862522+00:00"
+    },
+    {
+      "title": "[Sample Dataset] Duplicate unique field rejected",
+      "description": "Create a resource with an email that already exists. Expect 409 Conflict.",
+      "priority": "High",
+      "category": "Negative",
+      "expected_status": 409,
+      "expected_response": "Response matches documented behavior for status 409.",
+      "assertions": [
+        "Response status code is 409",
+        "Response body includes a conflict error message"
+      ],
+      "notes": "Confirmed correct behavior in staging; keep as reference pattern.",
+      "recorded_at": "2026-08-12T09:30:19.979287+00:00"
+    },
+    {
+      "title": "[Sample Dataset] Nullable field returns null, not omitted",
+      "description": "GET a resource whose optional 'middleName' field was never set. Expect the key to be present with value null.",
+      "priority": "Medium",
+      "category": "Schema",
+      "expected_status": 200,
+      "expected_response": "Response body includes middleName: null.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body contains key 'middleName' with value null"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-12T09:30:19.992390+00:00"
+    },
+    {
+      "title": "[Sample Dataset] Idempotency key prevents duplicate creation",
+      "description": "POST the same payload twice with the same Idempotency-Key header. Expect only one resource created.",
+      "priority": "High",
+      "category": "Edge",
+      "expected_status": 201,
+      "expected_response": "Second response returns the same resource id as the first.",
+      "assertions": [
+        "Response status code is 201 on first call, 200 on repeat",
+        "Both responses reference the same resource id"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-12T09:30:19.995952+00:00"
+    },
+    {
+      "title": "",
+      "description": "",
+      "priority": "Medium",
+      "category": "ErrorHandling",
+      "expected_status": null,
+      "expected_response": "",
+      "assertions": [],
+      "notes": null,
+      "recorded_at": "2026-08-12T10:32:43.488133+00:00"
+    },
+    {
+      "title": "",
+      "description": "",
+      "priority": "Medium",
+      "category": "ErrorHandling",
+      "expected_status": null,
+      "expected_response": "",
+      "assertions": [],
+      "notes": null,
+      "recorded_at": "2026-08-12T10:34:16.784175+00:00"
+    },
+    {
+      "title": "",
+      "description": "",
+      "priority": "Medium",
+      "category": "ErrorHandling",
+      "expected_status": null,
+      "expected_response": "",
+      "assertions": [],
+      "notes": null,
+      "recorded_at": "2026-08-12T10:39:14.529904+00:00"
+    },
+    {
+      "title": "",
+      "description": "",
+      "priority": "Medium",
+      "category": "ErrorHandling",
+      "expected_status": null,
+      "expected_response": "",
+      "assertions": [],
+      "notes": null,
+      "recorded_at": "2026-08-13T05:50:49.515244+00:00"
+    },
+    {
+      "title": "",
+      "description": "",
+      "priority": "Medium",
+      "category": "ErrorHandling",
+      "expected_status": null,
+      "expected_response": "",
+      "assertions": [],
+      "notes": null,
+      "recorded_at": "2026-08-13T05:51:28.918895+00:00"
+    },
+    {
+      "title": "",
+      "description": "",
+      "priority": "Medium",
+      "category": "ErrorHandling",
+      "expected_status": null,
+      "expected_response": "",
+      "assertions": [],
+      "notes": null,
+      "recorded_at": "2026-08-13T05:54:03.328442+00:00"
+    },
+    {
+      "title": "[Common Dataset] Non-existent identifier returns 404",
+      "description": "Call the endpoint with a random/non-existent id. Expect 404, not 500.",
+      "priority": "High",
+      "category": "Negative",
+      "expected_status": 404,
+      "expected_response": "Response matches documented behavior for status 404.",
+      "assertions": [
+        "Response status code is 404",
+        "Response body includes a not-found error message"
+      ],
+      "notes": "Confirmed correct behavior across multiple APIs; keep as a default reference pattern.",
+      "recorded_at": "2026-08-13T06:11:17.510328+00:00"
+    },
+    {
+      "title": "[Common Dataset] Mass assignment of restricted fields",
+      "description": "Attempt to set an admin-only field (e.g. isAdmin) via a regular create/update request.",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 201,
+      "expected_response": "Restricted field is ignored/stripped, not applied.",
+      "assertions": [
+        "Response status code is 201",
+        "Created/updated resource does not reflect the restricted field value"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-13T06:11:17.516599+00:00"
+    },
+    {
+      "title": "[Common Dataset] Idempotency key prevents duplicate creation",
+      "description": "POST the same payload twice with an identical Idempotency-Key header.",
+      "priority": "High",
+      "category": "Edge",
+      "expected_status": 201,
+      "expected_response": "Second response references the same resource id as the first.",
+      "assertions": [
+        "First call returns 201",
+        "Second call returns the same resource id, not a new one"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-13T06:11:17.545973+00:00"
+    },
+    {
+      "title": "[Common Dataset] Non-existent identifier returns 404",
+      "description": "Call the endpoint with a random/non-existent id. Expect 404, not 500.",
+      "priority": "High",
+      "category": "Negative",
+      "expected_status": 404,
+      "expected_response": "Response matches documented behavior for status 404.",
+      "assertions": [
+        "Response status code is 404",
+        "Response body includes a not-found error message"
+      ],
+      "notes": "Confirmed correct behavior across multiple APIs; keep as a default reference pattern.",
+      "recorded_at": "2026-08-13T06:23:45.489599+00:00"
+    },
+    {
+      "title": "[Common Dataset] Mass assignment of restricted fields",
+      "description": "Attempt to set an admin-only field (e.g. isAdmin) via a regular create/update request.",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 201,
+      "expected_response": "Restricted field is ignored/stripped, not applied.",
+      "assertions": [
+        "Response status code is 201",
+        "Created/updated resource does not reflect the restricted field value"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-13T06:23:45.498049+00:00"
+    },
+    {
+      "title": "[Common Dataset] Idempotency key prevents duplicate creation",
+      "description": "POST the same payload twice with an identical Idempotency-Key header.",
+      "priority": "High",
+      "category": "Edge",
+      "expected_status": 201,
+      "expected_response": "Second response references the same resource id as the first.",
+      "assertions": [
+        "First call returns 201",
+        "Second call returns the same resource id, not a new one"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-13T06:23:45.528336+00:00"
+    },
+    {
+      "title": "[Common Dataset] Non-existent identifier returns 404",
+      "description": "Call the endpoint with a random/non-existent id. Expect 404, not 500.",
+      "priority": "High",
+      "category": "Negative",
+      "expected_status": 404,
+      "expected_response": "Response matches documented behavior for status 404.",
+      "assertions": [
+        "Response status code is 404",
+        "Response body includes a not-found error message"
+      ],
+      "notes": "Confirmed correct behavior across multiple APIs; keep as a default reference pattern.",
+      "recorded_at": "2026-08-13T06:24:06.947567+00:00"
+    },
+    {
+      "title": "[Common Dataset] Mass assignment of restricted fields",
+      "description": "Attempt to set an admin-only field (e.g. isAdmin) via a regular create/update request.",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 201,
+      "expected_response": "Restricted field is ignored/stripped, not applied.",
+      "assertions": [
+        "Response status code is 201",
+        "Created/updated resource does not reflect the restricted field value"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-13T06:24:06.958057+00:00"
+    },
+    {
+      "title": "[Common Dataset] Idempotency key prevents duplicate creation",
+      "description": "POST the same payload twice with an identical Idempotency-Key header.",
+      "priority": "High",
+      "category": "Edge",
+      "expected_status": 201,
+      "expected_response": "Second response references the same resource id as the first.",
+      "assertions": [
+        "First call returns 201",
+        "Second call returns the same resource id, not a new one"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-13T06:24:06.982388+00:00"
+    },
+    {
+      "title": "[Common Dataset] Non-existent identifier returns 404",
+      "description": "Call the endpoint with a random/non-existent id. Expect 404, not 500.",
+      "priority": "High",
+      "category": "Negative",
+      "expected_status": 404,
+      "expected_response": "Response matches documented behavior for status 404.",
+      "assertions": [
+        "Response status code is 404",
+        "Response body includes a not-found error message"
+      ],
+      "notes": "Confirmed correct behavior across multiple APIs; keep as a default reference pattern.",
+      "recorded_at": "2026-08-18T06:24:25.478795+00:00"
+    },
+    {
+      "title": "[Common Dataset] Mass assignment of restricted fields",
+      "description": "Attempt to set an admin-only field (e.g. isAdmin) via a regular create/update request.",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 201,
+      "expected_response": "Restricted field is ignored/stripped, not applied.",
+      "assertions": [
+        "Response status code is 201",
+        "Created/updated resource does not reflect the restricted field value"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-18T06:24:25.482833+00:00"
+    },
+    {
+      "title": "[Common Dataset] Idempotency key prevents duplicate creation",
+      "description": "POST the same payload twice with an identical Idempotency-Key header.",
+      "priority": "High",
+      "category": "Edge",
+      "expected_status": 201,
+      "expected_response": "Second response references the same resource id as the first.",
+      "assertions": [
+        "First call returns 201",
+        "Second call returns the same resource id, not a new one"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-18T06:24:25.496406+00:00"
+    },
+    {
+      "title": "[Common Dataset] Non-existent identifier returns 404",
+      "description": "Call the endpoint with a random/non-existent id. Expect 404, not 500.",
+      "priority": "High",
+      "category": "Negative",
+      "expected_status": 404,
+      "expected_response": "Response matches documented behavior for status 404.",
+      "assertions": [
+        "Response status code is 404",
+        "Response body includes a not-found error message"
+      ],
+      "notes": "Confirmed correct behavior across multiple APIs; keep as a default reference pattern.",
+      "recorded_at": "2026-08-18T08:02:41.101169+00:00"
+    },
+    {
+      "title": "[Common Dataset] Mass assignment of restricted fields",
+      "description": "Attempt to set an admin-only field (e.g. isAdmin) via a regular create/update request.",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 201,
+      "expected_response": "Restricted field is ignored/stripped, not applied.",
+      "assertions": [
+        "Response status code is 201",
+        "Created/updated resource does not reflect the restricted field value"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-18T08:02:41.111145+00:00"
+    },
+    {
+      "title": "[Common Dataset] Idempotency key prevents duplicate creation",
+      "description": "POST the same payload twice with an identical Idempotency-Key header.",
+      "priority": "High",
+      "category": "Edge",
+      "expected_status": 201,
+      "expected_response": "Second response references the same resource id as the first.",
+      "assertions": [
+        "First call returns 201",
+        "Second call returns the same resource id, not a new one"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-18T08:02:41.143754+00:00"
+    },
+    {
+      "title": "[Common Dataset] Non-existent identifier returns 404",
+      "description": "Call the endpoint with a random/non-existent id. Expect 404, not 500.",
+      "priority": "High",
+      "category": "Negative",
+      "expected_status": 404,
+      "expected_response": "Response matches documented behavior for status 404.",
+      "assertions": [
+        "Response status code is 404",
+        "Response body includes a not-found error message"
+      ],
+      "notes": "Confirmed correct behavior across multiple APIs; keep as a default reference pattern.",
+      "recorded_at": "2026-08-18T08:15:55.237288+00:00"
+    },
+    {
+      "title": "[Common Dataset] Mass assignment of restricted fields",
+      "description": "Attempt to set an admin-only field (e.g. isAdmin) via a regular create/update request.",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 201,
+      "expected_response": "Restricted field is ignored/stripped, not applied.",
+      "assertions": [
+        "Response status code is 201",
+        "Created/updated resource does not reflect the restricted field value"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-18T08:15:55.245286+00:00"
+    },
+    {
+      "title": "[Common Dataset] Idempotency key prevents duplicate creation",
+      "description": "POST the same payload twice with an identical Idempotency-Key header.",
+      "priority": "High",
+      "category": "Edge",
+      "expected_status": 201,
+      "expected_response": "Second response references the same resource id as the first.",
+      "assertions": [
+        "First call returns 201",
+        "Second call returns the same resource id, not a new one"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-18T08:15:55.269781+00:00"
+    }
+  ],
+  "rejected": [
+    {
+      "title": "[Offline Fallback] Rate limit enforcement",
+      "description": "Burst requests beyond documented rate limits. Expect 429 Too Many Requests with a Retry-After header where documented. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T08:18:56.801870+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Rate limit enforcement",
+      "description": "Burst requests beyond documented rate limits. Expect 429 Too Many Requests with a Retry-After header where documented. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T08:19:00.385487+00:00"
+    },
+    {
+      "title": "[Offline Fallback] Rate limiting",
+      "description": "Send requests in rapid succession beyond the documented rate limit. Expect 429 Too Many Requests once the limit is exceeded. (Auto-generated offline because the OpenAI API was unavailable; not reviewed by the LLM.)",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429",
+        "Response body matches the documented/expected schema for this scenario"
+      ],
+      "notes": null,
+      "recorded_at": "2026-08-03T10:01:13.268857+00:00"
+    },
+    {
+      "title": "[Sample Dataset] Overly aggressive rate limit test",
+      "description": "Original template assumed a fixed 100 req/min limit for all endpoints, which does not hold across this API's tiers.",
+      "priority": "Low",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429"
+      ],
+      "notes": "Rejected: rate limit thresholds vary per plan tier; needs per-endpoint configuration before reuse.",
+      "recorded_at": "2026-08-12T09:30:19.984338+00:00"
+    },
+    {
+      "title": "[Common Dataset] Fixed rate-limit threshold assumption",
+      "description": "Original template assumed a universal fixed rate limit (e.g. 100 req/min) for every endpoint.",
+      "priority": "Low",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429"
+      ],
+      "notes": "Rejected: rate limits vary per plan/tier/endpoint; needs per-API configuration rather than a hardcoded assumption.",
+      "recorded_at": "2026-08-13T06:11:17.523814+00:00"
+    },
+    {
+      "title": "[Common Dataset] Fixed rate-limit threshold assumption",
+      "description": "Original template assumed a universal fixed rate limit (e.g. 100 req/min) for every endpoint.",
+      "priority": "Low",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429"
+      ],
+      "notes": "Rejected: rate limits vary per plan/tier/endpoint; needs per-API configuration rather than a hardcoded assumption.",
+      "recorded_at": "2026-08-13T06:23:45.506821+00:00"
+    },
+    {
+      "title": "[Common Dataset] Fixed rate-limit threshold assumption",
+      "description": "Original template assumed a universal fixed rate limit (e.g. 100 req/min) for every endpoint.",
+      "priority": "Low",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429"
+      ],
+      "notes": "Rejected: rate limits vary per plan/tier/endpoint; needs per-API configuration rather than a hardcoded assumption.",
+      "recorded_at": "2026-08-13T06:24:06.965597+00:00"
+    },
+    {
+      "title": "[Common Dataset] Fixed rate-limit threshold assumption",
+      "description": "Original template assumed a universal fixed rate limit (e.g. 100 req/min) for every endpoint.",
+      "priority": "Low",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429"
+      ],
+      "notes": "Rejected: rate limits vary per plan/tier/endpoint; needs per-API configuration rather than a hardcoded assumption.",
+      "recorded_at": "2026-08-18T06:24:25.486773+00:00"
+    },
+    {
+      "title": "[Common Dataset] Fixed rate-limit threshold assumption",
+      "description": "Original template assumed a universal fixed rate limit (e.g. 100 req/min) for every endpoint.",
+      "priority": "Low",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429"
+      ],
+      "notes": "Rejected: rate limits vary per plan/tier/endpoint; needs per-API configuration rather than a hardcoded assumption.",
+      "recorded_at": "2026-08-18T08:02:41.123932+00:00"
+    },
+    {
+      "title": "[Common Dataset] Fixed rate-limit threshold assumption",
+      "description": "Original template assumed a universal fixed rate limit (e.g. 100 req/min) for every endpoint.",
+      "priority": "Low",
+      "category": "Security",
+      "expected_status": 429,
+      "expected_response": "Response matches documented behavior for status 429.",
+      "assertions": [
+        "Response status code is 429"
+      ],
+      "notes": "Rejected: rate limits vary per plan/tier/endpoint; needs per-API configuration rather than a hardcoded assumption.",
+      "recorded_at": "2026-08-18T08:15:55.253265+00:00"
+    }
+  ],
+  "modified": [
+    {
+      "title": "[Sample Dataset] Mass assignment of restricted fields",
+      "description": "Include an 'isAdmin' field in a user-creation payload sent by a non-admin caller.",
+      "priority": "High",
+      "category": "Security",
+      "expected_status": 201,
+      "expected_response": "isAdmin is ignored/stripped from the created resource, not silently set to true.",
+      "assertions": [
+        "Response status code is 201",
+        "Created resource does not have isAdmin=true"
+      ],
+      "notes": "Modified: original test only checked status code; added assertion that isAdmin was actually ignored.",
+      "recorded_at": "2026-08-12T09:30:19.988262+00:00"
+    },
+    {
+      "title": "[Common Dataset] Nullable field returns null, not omitted",
+      "description": "GET a resource whose optional field was never set.",
+      "priority": "Medium",
+      "category": "Schema",
+      "expected_status": 200,
+      "expected_response": "Response body explicitly includes the key with value null.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body contains the optional key with value null"
+      ],
+      "notes": "Modified: original assertion only checked status code; added explicit null-vs-omitted check.",
+      "recorded_at": "2026-08-13T06:11:17.534919+00:00"
+    },
+    {
+      "title": "[Common Dataset] Nullable field returns null, not omitted",
+      "description": "GET a resource whose optional field was never set.",
+      "priority": "Medium",
+      "category": "Schema",
+      "expected_status": 200,
+      "expected_response": "Response body explicitly includes the key with value null.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body contains the optional key with value null"
+      ],
+      "notes": "Modified: original assertion only checked status code; added explicit null-vs-omitted check.",
+      "recorded_at": "2026-08-13T06:23:45.519817+00:00"
+    },
+    {
+      "title": "[Common Dataset] Nullable field returns null, not omitted",
+      "description": "GET a resource whose optional field was never set.",
+      "priority": "Medium",
+      "category": "Schema",
+      "expected_status": 200,
+      "expected_response": "Response body explicitly includes the key with value null.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body contains the optional key with value null"
+      ],
+      "notes": "Modified: original assertion only checked status code; added explicit null-vs-omitted check.",
+      "recorded_at": "2026-08-13T06:24:06.973345+00:00"
+    },
+    {
+      "title": "[Common Dataset] Nullable field returns null, not omitted",
+      "description": "GET a resource whose optional field was never set.",
+      "priority": "Medium",
+      "category": "Schema",
+      "expected_status": 200,
+      "expected_response": "Response body explicitly includes the key with value null.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body contains the optional key with value null"
+      ],
+      "notes": "Modified: original assertion only checked status code; added explicit null-vs-omitted check.",
+      "recorded_at": "2026-08-18T06:24:25.492522+00:00"
+    },
+    {
+      "title": "[Common Dataset] Nullable field returns null, not omitted",
+      "description": "GET a resource whose optional field was never set.",
+      "priority": "Medium",
+      "category": "Schema",
+      "expected_status": 200,
+      "expected_response": "Response body explicitly includes the key with value null.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body contains the optional key with value null"
+      ],
+      "notes": "Modified: original assertion only checked status code; added explicit null-vs-omitted check.",
+      "recorded_at": "2026-08-18T08:02:41.135241+00:00"
+    },
+    {
+      "title": "[Common Dataset] Nullable field returns null, not omitted",
+      "description": "GET a resource whose optional field was never set.",
+      "priority": "Medium",
+      "category": "Schema",
+      "expected_status": 200,
+      "expected_response": "Response body explicitly includes the key with value null.",
+      "assertions": [
+        "Response status code is 200",
+        "Response body contains the optional key with value null"
+      ],
+      "notes": "Modified: original assertion only checked status code; added explicit null-vs-omitted check.",
+      "recorded_at": "2026-08-18T08:15:55.260917+00:00"
+    }
+  ]
+}

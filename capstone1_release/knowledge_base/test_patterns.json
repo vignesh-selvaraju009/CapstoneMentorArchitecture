@@ -1,0 +1,508 @@
+{
+  "patterns": [
+    {
+      "id": "happy-path-get",
+      "category": "Happy Path",
+      "methods": [
+        "GET"
+      ],
+      "title": "Valid request returns expected resource",
+      "description": "Call the endpoint with valid path/query parameters and valid auth. Expect 200 and a response body matching the documented schema."
+    },
+    {
+      "id": "happy-path-post",
+      "category": "Happy Path",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Valid payload creates/updates resource",
+      "description": "Send a fully valid request body. Expect the documented success status code (200/201/204) and, where applicable, a response body matching the schema."
+    },
+    {
+      "id": "negative-invalid-id",
+      "category": "Negative",
+      "methods": [
+        "GET",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "Invalid/non-existent identifier",
+      "description": "Call the endpoint with a path parameter that does not correspond to any existing resource (e.g. id=999999999). Expect 404 Not Found."
+    },
+    {
+      "id": "negative-malformed-body",
+      "category": "Negative",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Malformed or missing required fields in request body",
+      "description": "Omit a required field, or send a field with the wrong type. Expect 400 Bad Request with a validation error message."
+    },
+    {
+      "id": "negative-wrong-content-type",
+      "category": "Negative",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Unsupported Content-Type",
+      "description": "Send the request body with an unsupported Content-Type header (e.g. text/plain instead of application/json). Expect 400 or 415."
+    },
+    {
+      "id": "boundary-numeric",
+      "category": "Boundary",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Boundary values for numeric parameters",
+      "description": "Test minimum, maximum, zero, and negative values for integer/number parameters and fields."
+    },
+    {
+      "id": "boundary-string-length",
+      "category": "Boundary",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Boundary values for string length",
+      "description": "Test empty string, single character, and max-length (and one-over-max-length) strings for string fields."
+    },
+    {
+      "id": "security-unauthorized",
+      "category": "Security",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "Missing authentication",
+      "description": "Call the endpoint without any Authorization header/credentials. Expect 401 Unauthorized."
+    },
+    {
+      "id": "security-forbidden",
+      "category": "Security",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "Insufficient permissions",
+      "description": "Call the endpoint with valid credentials that lack the required scope/role. Expect 403 Forbidden."
+    },
+    {
+      "id": "security-sql-injection",
+      "category": "Security",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "SQL injection payload",
+      "description": "Submit a classic SQL injection payload (e.g. \"' OR '1'='1\") in string parameters/fields. Expect the request to be rejected (400) or safely handled, never a 500 or data leak."
+    },
+    {
+      "id": "security-rate-limit",
+      "category": "Security",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "Rate limiting",
+      "description": "Send requests in rapid succession beyond the documented rate limit. Expect 429 Too Many Requests once the limit is exceeded."
+    },
+    {
+      "id": "schema-response-validation",
+      "category": "Schema",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Response schema validation",
+      "description": "Validate that the response body matches the documented JSON schema for the given status code (required fields present, correct types)."
+    },
+    {
+      "id": "edge-empty-collection",
+      "category": "Edge",
+      "methods": [
+        "GET"
+      ],
+      "title": "Empty collection response",
+      "description": "For list endpoints, verify the behavior when no resources match the query (expect 200 with an empty array, not an error)."
+    },
+    {
+      "id": "edge-idempotency",
+      "category": "Edge",
+      "methods": [
+        "PUT",
+        "DELETE"
+      ],
+      "title": "Idempotent operation repeated",
+      "description": "Repeat the same PUT/DELETE request twice. Expect the same end state and no error on the second call (for DELETE, typically 404 or 204 on repeat)."
+    },
+    {
+      "id": "sample-tp-happy-list",
+      "category": "Happy Path",
+      "methods": [
+        "GET"
+      ],
+      "title": "List resources with default pagination",
+      "description": "Call a collection GET endpoint with no query params. Expect 200 and a JSON array (possibly empty) matching the documented item schema."
+    },
+    {
+      "id": "sample-tp-happy-create",
+      "category": "Happy Path",
+      "methods": [
+        "POST"
+      ],
+      "title": "Create resource with all optional fields populated",
+      "description": "Send a request body including every optional field, not just required ones. Expect the success status code and a response echoing all provided fields."
+    },
+    {
+      "id": "sample-tp-happy-update",
+      "category": "Happy Path",
+      "methods": [
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Partial update only changes targeted fields",
+      "description": "PATCH a resource with a single field. Expect 200 and confirm unrelated fields remain unchanged in the response."
+    },
+    {
+      "id": "sample-tp-neg-dup",
+      "category": "Negative",
+      "methods": [
+        "POST"
+      ],
+      "title": "Duplicate unique field rejected",
+      "description": "Create a resource with a field value (e.g. email/username) that already exists. Expect 409 Conflict or 400 with a clear validation error."
+    },
+    {
+      "id": "sample-tp-neg-wrong-type",
+      "category": "Negative",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Wrong data type for field",
+      "description": "Send a string where a number is expected (or vice versa). Expect 400 Bad Request with a schema validation error."
+    },
+    {
+      "id": "sample-tp-boundary-array",
+      "category": "Boundary",
+      "methods": [
+        "POST",
+        "PUT"
+      ],
+      "title": "Array field at max item count",
+      "description": "Send an array field at exactly its documented maxItems, and one item over. Expect success at the limit and rejection just beyond it."
+    },
+    {
+      "id": "sample-tp-schema-nested",
+      "category": "Schema",
+      "methods": [
+        "GET"
+      ],
+      "title": "Nested object response schema validation",
+      "description": "Validate that nested objects/arrays in the response body match the documented schema, including required sub-fields and types."
+    },
+    {
+      "id": "sample-tp-schema-null",
+      "category": "Schema",
+      "methods": [
+        "GET"
+      ],
+      "title": "Nullable field returns null, not omitted",
+      "description": "For fields marked nullable in the schema, verify the API returns an explicit null rather than omitting the key entirely."
+    },
+    {
+      "id": "sample-tp-edge-concurrent",
+      "category": "Edge",
+      "methods": [
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "Concurrent modification / stale write",
+      "description": "Update the same resource from two 'concurrent' requests using stale data (e.g. missing If-Match/ETag). Verify the API either rejects the stale write or applies last-write-wins consistently."
+    },
+    {
+      "id": "sample-tp-edge-idempotency",
+      "category": "Edge",
+      "methods": [
+        "POST"
+      ],
+      "title": "Idempotency key prevents duplicate creation",
+      "description": "Send the same POST request twice with an identical idempotency key. Expect the second request to return the original resource, not create a duplicate."
+    },
+    {
+      "id": "postman-get-pets",
+      "category": "Happy Path",
+      "methods": [
+        "GET"
+      ],
+      "title": "List all pets",
+      "description": "GET {{baseUrl}}/pets with no body. Expect 200 and a JSON array of pet objects."
+    },
+    {
+      "id": "postman-post-pets",
+      "category": "Happy Path",
+      "methods": [
+        "POST"
+      ],
+      "title": "Create a pet",
+      "description": "POST {{baseUrl}}/pets with Content-Type: application/json and body {\"name\": \"Max\", \"tag\": \"dog\"}. Expect 201 and the created pet echoed back with an assigned id."
+    },
+    {
+      "id": "postman-get-pet-by-id",
+      "category": "Happy Path",
+      "methods": [
+        "GET"
+      ],
+      "title": "Get pet by ID",
+      "description": "GET {{baseUrl}}/pets/{{petId}} with a valid petId. Expect 200 and the matching pet object."
+    },
+    {
+      "id": "custom-27e69509",
+      "category": "Functional",
+      "methods": [],
+      "title": "",
+      "description": ""
+    },
+    {
+      "id": "KB-001",
+      "category": "Functional",
+      "methods": [],
+      "title": "",
+      "description": ""
+    },
+    {
+      "id": "common-tp-happy-get-single",
+      "category": "Happy Path",
+      "methods": [
+        "GET"
+      ],
+      "title": "Fetch a single resource by valid ID",
+      "description": "Call the endpoint with a valid path parameter identifying an existing resource. Expect 200 and a response body matching the documented schema."
+    },
+    {
+      "id": "common-tp-happy-list-filtered",
+      "category": "Happy Path",
+      "methods": [
+        "GET"
+      ],
+      "title": "List resources with valid filter/query parameters",
+      "description": "Call a collection endpoint with valid, documented query parameters (filters, sort, pagination). Expect 200 and results consistent with the applied filters."
+    },
+    {
+      "id": "common-tp-happy-create",
+      "category": "Happy Path",
+      "methods": [
+        "POST"
+      ],
+      "title": "Create resource with valid payload",
+      "description": "Send a fully valid request body containing all required fields. Expect the documented success status (200/201) and a response body reflecting the created resource, including a generated identifier."
+    },
+    {
+      "id": "common-tp-happy-update-full",
+      "category": "Happy Path",
+      "methods": [
+        "PUT"
+      ],
+      "title": "Full update replaces resource",
+      "description": "Send a complete valid representation of the resource. Expect 200/204 and the resource fully replaced with the new values on subsequent GET."
+    },
+    {
+      "id": "common-tp-happy-update-partial",
+      "category": "Happy Path",
+      "methods": [
+        "PATCH"
+      ],
+      "title": "Partial update changes only targeted fields",
+      "description": "Send a partial payload with a subset of fields. Expect 200 and confirm unrelated fields remain unchanged."
+    },
+    {
+      "id": "common-tp-happy-delete",
+      "category": "Happy Path",
+      "methods": [
+        "DELETE"
+      ],
+      "title": "Delete an existing resource",
+      "description": "Delete a resource that exists. Expect 200/204 and confirm a subsequent GET on the same resource returns 404."
+    },
+    {
+      "id": "common-tp-neg-not-found",
+      "category": "Negative",
+      "methods": [
+        "GET",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "Non-existent identifier returns 404",
+      "description": "Call the endpoint with a path parameter that does not match any existing resource (e.g. a very large or random id/UUID). Expect 404 Not Found, not a 500 error."
+    },
+    {
+      "id": "common-tp-neg-missing-required",
+      "category": "Negative",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Missing required field rejected",
+      "description": "Omit a required field from the request body. Expect 400 Bad Request with a validation error identifying the missing field."
+    },
+    {
+      "id": "common-tp-neg-wrong-type",
+      "category": "Negative",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Wrong field data type rejected",
+      "description": "Send a value of the wrong type for a field (e.g. string instead of integer). Expect 400 Bad Request with a schema validation error."
+    },
+    {
+      "id": "common-tp-neg-duplicate-unique",
+      "category": "Negative",
+      "methods": [
+        "POST"
+      ],
+      "title": "Duplicate unique field rejected",
+      "description": "Attempt to create a resource with a value that must be unique (e.g. email, username) that already exists. Expect 409 Conflict or 400 with a clear error message."
+    },
+    {
+      "id": "common-tp-neg-unsupported-content-type",
+      "category": "Negative",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Unsupported Content-Type rejected",
+      "description": "Send the request body with an unsupported Content-Type (e.g. text/plain instead of application/json). Expect 400 or 415 Unsupported Media Type."
+    },
+    {
+      "id": "common-tp-boundary-numeric",
+      "category": "Boundary",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Numeric field boundary values",
+      "description": "Test zero, negative, minimum, and maximum representable values for integer/number parameters and fields, plus one value just outside any documented min/max."
+    },
+    {
+      "id": "common-tp-boundary-string-length",
+      "category": "Boundary",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "String length boundary values",
+      "description": "Test empty string, single character, exactly max-length, and max-length-plus-one for string fields with a documented maxLength."
+    },
+    {
+      "id": "common-tp-boundary-pagination",
+      "category": "Boundary",
+      "methods": [
+        "GET"
+      ],
+      "title": "Pagination parameter boundary values",
+      "description": "Test page=0, page=-1, limit=0, and an extremely large limit/offset. Expect the API to clamp or reject rather than error or return unbounded results."
+    },
+    {
+      "id": "common-tp-schema-response",
+      "category": "Schema",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "title": "Response body matches documented schema",
+      "description": "Validate that every field in the response body matches the documented type, and that no undocumented required fields are missing."
+    },
+    {
+      "id": "common-tp-schema-nullable",
+      "category": "Schema",
+      "methods": [
+        "GET"
+      ],
+      "title": "Nullable fields returned explicitly as null",
+      "description": "For fields marked nullable, verify the API returns an explicit null value rather than omitting the key when no value is set."
+    },
+    {
+      "id": "common-tp-auth-missing",
+      "category": "Authorization",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "Request without credentials rejected",
+      "description": "Call the endpoint with no Authorization header/credentials at all on a protected endpoint. Expect 401 Unauthorized."
+    },
+    {
+      "id": "common-tp-auth-wrong-role",
+      "category": "Authorization",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "Insufficient role/permissions rejected",
+      "description": "Call a protected endpoint using valid credentials that lack the required role/scope. Expect 403 Forbidden."
+    },
+    {
+      "id": "common-tp-edge-idempotency",
+      "category": "Edge",
+      "methods": [
+        "POST"
+      ],
+      "title": "Idempotency key prevents duplicate creation",
+      "description": "Send the identical request twice with the same idempotency key. Expect the second response to return the original resource rather than creating a duplicate."
+    },
+    {
+      "id": "common-tp-edge-concurrent-write",
+      "category": "Edge",
+      "methods": [
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "title": "Concurrent/stale write handling",
+      "description": "Update the same resource using stale data (e.g. no If-Match/ETag, or an outdated version). Verify the API either rejects the stale write or applies a consistent conflict-resolution rule."
+    }
+  ]
+}

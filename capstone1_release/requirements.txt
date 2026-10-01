@@ -1,0 +1,31 @@
+## Frontend
+streamlit>=1.38,<2
+
+## AI
+openai>=1.40,<2
+
+## Parser
+prance>=23.6.21.0
+openapi-spec-validator>=0.7
+PyYAML>=6.0
+jsonschema>=4.22
+
+## Vector DB / Embeddings
+faiss-cpu>=1.8
+sentence-transformers>=3.0
+
+## Template Engine
+Jinja2>=3.1
+
+## Testing / Execution
+pytest>=8.2
+requests>=2.32
+pytest-html>=4.1
+allure-pytest>=2.13
+mongomock>=4.1  # unit tests exercise the Mongo repository without a real server
+
+## Config / utils
+python-dotenv>=1.0
+
+## MongoDB
+pymongo>=4.8,<5

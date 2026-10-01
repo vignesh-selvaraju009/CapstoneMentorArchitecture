@@ -1,0 +1,213 @@
+[
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-happy-list",
+    "category": "Happy Path",
+    "methods": ["GET"],
+    "title": "List resources with default pagination",
+    "description": "Call a collection GET endpoint with no query params. Expect 200 and a JSON array (possibly empty) matching the documented item schema."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-happy-create",
+    "category": "Happy Path",
+    "methods": ["POST"],
+    "title": "Create resource with all optional fields populated",
+    "description": "Send a request body including every optional field, not just required ones. Expect the success status code and a response echoing all provided fields."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-happy-update",
+    "category": "Happy Path",
+    "methods": ["PUT", "PATCH"],
+    "title": "Partial update only changes targeted fields",
+    "description": "PATCH a resource with a single field. Expect 200 and confirm unrelated fields remain unchanged in the response."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-neg-dup",
+    "category": "Negative",
+    "methods": ["POST"],
+    "title": "Duplicate unique field rejected",
+    "description": "Create a resource with a field value (e.g. email/username) that already exists. Expect 409 Conflict or 400 with a clear validation error."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-neg-wrong-type",
+    "category": "Negative",
+    "methods": ["POST", "PUT", "PATCH"],
+    "title": "Wrong data type for field",
+    "description": "Send a string where a number is expected (or vice versa). Expect 400 Bad Request with a schema validation error."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-boundary-array",
+    "category": "Boundary",
+    "methods": ["POST", "PUT"],
+    "title": "Array field at max item count",
+    "description": "Send an array field at exactly its documented maxItems, and one item over. Expect success at the limit and rejection just beyond it."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-schema-nested",
+    "category": "Schema",
+    "methods": ["GET"],
+    "title": "Nested object response schema validation",
+    "description": "Validate that nested objects/arrays in the response body match the documented schema, including required sub-fields and types."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-schema-null",
+    "category": "Schema",
+    "methods": ["GET"],
+    "title": "Nullable field returns null, not omitted",
+    "description": "For fields marked nullable in the schema, verify the API returns an explicit null rather than omitting the key entirely."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-edge-concurrent",
+    "category": "Edge",
+    "methods": ["PUT", "PATCH", "DELETE"],
+    "title": "Concurrent modification / stale write",
+    "description": "Update the same resource from two 'concurrent' requests using stale data (e.g. missing If-Match/ETag). Verify the API either rejects the stale write or applies last-write-wins consistently."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "sample-tp-edge-idempotency",
+    "category": "Edge",
+    "methods": ["POST"],
+    "title": "Idempotency key prevents duplicate creation",
+    "description": "Send the same POST request twice with an identical idempotency key. Expect the second request to return the original resource, not create a duplicate."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "sample-sec-api6-mass-assign-inventory",
+    "category": "Security",
+    "owasp": "API6:2023 Unrestricted Access to Sensitive Business Flows",
+    "title": "Automated bulk creation abuse",
+    "description": "Rapidly issue many creation requests in a short window (e.g. account signups, coupon redemptions). Expect rate limiting or CAPTCHA-style friction, not unlimited automation."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "sample-sec-api8-misconfig",
+    "category": "Security",
+    "owasp": "API8:2023 Security Misconfiguration",
+    "title": "Verbose stack trace on server error",
+    "description": "Trigger an unhandled server error (e.g. malformed input causing a 500). Verify the response does not leak stack traces, internal paths, or framework versions."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "sample-sec-api9-inventory",
+    "category": "Security",
+    "owasp": "API9:2023 Improper Inventory Management",
+    "title": "Deprecated/legacy API version still reachable",
+    "description": "Probe for old API versions (e.g. /v1/ when /v2/ is current). Verify deprecated versions are disabled or have equivalent security controls."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "sample-sec-cors",
+    "category": "Security",
+    "owasp": "API8:2023 Security Misconfiguration",
+    "title": "Overly permissive CORS policy",
+    "description": "Send a request with an arbitrary Origin header. Verify Access-Control-Allow-Origin is not '*' combined with credentials, and only trusted origins are reflected."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "sample-sec-jwt-alg-none",
+    "category": "Security",
+    "owasp": "API2:2023 Broken Authentication",
+    "title": "JWT 'alg: none' acceptance",
+    "description": "Send a JWT with its algorithm header set to 'none' and signature stripped. Expect the token to be rejected as invalid/unauthenticated."
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "uuid",
+    "description": "Boundary/edge cases for UUID path parameters and fields",
+    "values": ["00000000-0000-0000-0000-000000000000", "not-a-uuid", ""],
+    "cases": ["nil_uuid", "malformed", "empty"]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "phone_number",
+    "description": "Boundary/edge cases for phone number fields",
+    "values": ["+10000000000", "123", "+1 (555) 555-5555 ext. 99999", "not-a-phone"]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "currency_amount",
+    "description": "Boundary values for monetary amount fields (assume 2 decimal places)",
+    "values": [0.00, 0.01, -0.01, 999999999999.99, 1e20]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "file_upload_size",
+    "description": "Boundary values for file upload size limits, in bytes",
+    "values": [0, 1, 10485760, 10485761]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "timezone_offset",
+    "description": "Boundary cases for timezone/UTC-offset fields",
+    "values": ["+00:00", "+14:00", "-12:00", "+15:00", "Z"]
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "approved",
+    "title": "[Sample Dataset] Duplicate unique field rejected",
+    "description": "Create a resource with an email that already exists. Expect 409 Conflict.",
+    "priority": "High",
+    "category": "Negative",
+    "expected_status": 409,
+    "expected_response": "Response matches documented behavior for status 409.",
+    "assertions": ["Response status code is 409", "Response body includes a conflict error message"],
+    "notes": "Confirmed correct behavior in staging; keep as reference pattern."
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "rejected",
+    "title": "[Sample Dataset] Overly aggressive rate limit test",
+    "description": "Original template assumed a fixed 100 req/min limit for all endpoints, which does not hold across this API's tiers.",
+    "priority": "Low",
+    "category": "Security",
+    "expected_status": 429,
+    "expected_response": "Response matches documented behavior for status 429.",
+    "assertions": ["Response status code is 429"],
+    "notes": "Rejected: rate limit thresholds vary per plan tier; needs per-endpoint configuration before reuse."
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "modified",
+    "title": "[Sample Dataset] Mass assignment of restricted fields",
+    "description": "Include an 'isAdmin' field in a user-creation payload sent by a non-admin caller.",
+    "priority": "High",
+    "category": "Security",
+    "expected_status": 201,
+    "expected_response": "isAdmin is ignored/stripped from the created resource, not silently set to true.",
+    "assertions": ["Response status code is 201", "Created resource does not have isAdmin=true"],
+    "notes": "Modified: original test only checked status code; added assertion that isAdmin was actually ignored."
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "approved",
+    "title": "[Sample Dataset] Nullable field returns null, not omitted",
+    "description": "GET a resource whose optional 'middleName' field was never set. Expect the key to be present with value null.",
+    "priority": "Medium",
+    "category": "Schema",
+    "expected_status": 200,
+    "expected_response": "Response body includes middleName: null.",
+    "assertions": ["Response status code is 200", "Response body contains key 'middleName' with value null"],
+    "notes": null
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "approved",
+    "title": "[Sample Dataset] Idempotency key prevents duplicate creation",
+    "description": "POST the same payload twice with the same Idempotency-Key header. Expect only one resource created.",
+    "priority": "High",
+    "category": "Edge",
+    "expected_status": 201,
+    "expected_response": "Second response returns the same resource id as the first.",
+    "assertions": ["Response status code is 201 on first call, 200 on repeat", "Both responses reference the same resource id"],
+    "notes": null
+  }
+]

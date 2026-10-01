@@ -1,0 +1,584 @@
+openapi: 3.0.3
+info:
+  title: Library Management API
+  version: 1.0.0
+  description: >
+    A realistic library-management OpenAPI 3.0 spec covering book catalog,
+    member, and loan resources — used to exercise every test-generation
+    category (happy path, negative, boundary, schema, authorization, edge).
+servers:
+  - url: https://library.example.com/api/v1
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Book:
+      type: object
+      required: [id, isbn, title, genre, availableCopies]
+      properties:
+        id:
+          type: string
+          format: uuid
+        isbn:
+          type: string
+          pattern: '^\d{3}-\d{10}$'
+        title:
+          type: string
+          maxLength: 300
+        author:
+          type: string
+          maxLength: 200
+        genre:
+          type: string
+          enum: [fiction, non_fiction, reference, periodical, childrens]
+        totalCopies:
+          type: integer
+          minimum: 1
+        availableCopies:
+          type: integer
+          minimum: 0
+        publishedYear:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+    NewBook:
+      type: object
+      required: [isbn, title, genre, totalCopies]
+      properties:
+        isbn:
+          type: string
+          pattern: '^\d{3}-\d{10}$'
+        title:
+          type: string
+          maxLength: 300
+        author:
+          type: string
+          maxLength: 200
+        genre:
+          type: string
+          enum: [fiction, non_fiction, reference, periodical, childrens]
+        totalCopies:
+          type: integer
+          minimum: 1
+        publishedYear:
+          type: integer
+    UpdateBook:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 300
+        author:
+          type: string
+          maxLength: 200
+        totalCopies:
+          type: integer
+          minimum: 1
+    Member:
+      type: object
+      required: [id, email, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+          maxLength: 200
+        status:
+          type: string
+          enum: [active, suspended, expired]
+        activeLoanCount:
+          type: integer
+          minimum: 0
+        joinedAt:
+          type: string
+          format: date-time
+    NewMember:
+      type: object
+      required: [email, fullName]
+      properties:
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+          maxLength: 200
+    UpdateMember:
+      type: object
+      properties:
+        fullName:
+          type: string
+          maxLength: 200
+        status:
+          type: string
+          enum: [active, suspended, expired]
+    Loan:
+      type: object
+      required: [id, bookId, memberId, status, dueDate]
+      properties:
+        id:
+          type: string
+          format: uuid
+        bookId:
+          type: string
+          format: uuid
+        memberId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [active, returned, overdue]
+        borrowedAt:
+          type: string
+          format: date-time
+        dueDate:
+          type: string
+          format: date
+        returnedAt:
+          type: string
+          format: date-time
+          nullable: true
+    NewLoan:
+      type: object
+      required: [bookId, memberId]
+      properties:
+        bookId:
+          type: string
+          format: uuid
+        memberId:
+          type: string
+          format: uuid
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+security:
+  - BearerAuth: []
+paths:
+  /books:
+    get:
+      operationId: listBooks
+      summary: List books in the catalog
+      tags: [books]
+      parameters:
+        - name: genre
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [fiction, non_fiction, reference, periodical, childrens]
+        - name: available
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        "200":
+          description: A page of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createBook
+      summary: Add a new book to the catalog
+      tags: [books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewBook"
+      responses:
+        "201":
+          description: Book created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden - librarian role required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: A book with this ISBN already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /books/{bookId}:
+    get:
+      operationId: getBook
+      summary: Get a single book by id
+      tags: [books]
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: The requested book
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "404":
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateBook
+      summary: Update a book's details
+      tags: [books]
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBook"
+      responses:
+        "200":
+          description: Book updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "404":
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteBook
+      summary: Remove a book from the catalog
+      tags: [books]
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Book deleted
+        "404":
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Book has active loans and cannot be deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /members:
+    get:
+      operationId: listMembers
+      summary: List members
+      tags: [members]
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [active, suspended, expired]
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        "200":
+          description: A page of members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Member"
+    post:
+      operationId: createMember
+      summary: Enroll a new member
+      tags: [members]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewMember"
+      responses:
+        "201":
+          description: Member created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: A member with this email already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /members/{memberId}:
+    get:
+      operationId: getMember
+      summary: Get a single member by id
+      tags: [members]
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: The requested member
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+        "404":
+          description: Member not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      operationId: updateMember
+      summary: Update a member's details or status
+      tags: [members]
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMember"
+      responses:
+        "200":
+          description: Member updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+        "403":
+          description: Forbidden - librarian role required to change status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Member not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /loans:
+    get:
+      operationId: listLoans
+      summary: List loans
+      tags: [loans]
+      parameters:
+        - name: memberId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [active, returned, overdue]
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        "200":
+          description: A page of loans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Loan"
+    post:
+      operationId: createLoan
+      summary: Borrow a book (create a loan)
+      tags: [loans]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewLoan"
+      responses:
+        "201":
+          description: Loan created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Loan"
+        "404":
+          description: Book or member not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Book unavailable, member suspended, or loan limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /loans/{loanId}:
+    get:
+      operationId: getLoan
+      summary: Get a single loan by id
+      tags: [loans]
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: The requested loan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Loan"
+        "404":
+          description: Loan not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /loans/{loanId}/return:
+    post:
+      operationId: returnLoan
+      summary: Return a borrowed book
+      tags: [loans]
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Loan marked as returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Loan"
+        "404":
+          description: Loan not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Loan already returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"

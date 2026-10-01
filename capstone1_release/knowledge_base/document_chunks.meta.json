@@ -1,0 +1,90 @@
+[
+  {
+    "chunk_id": "27f89b26299b11c4",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": null,
+    "path": "$",
+    "kind": "object_anchor",
+    "text": "{\"keys\": [\"openapi\", \"info\", \"servers\", \"components\", \"security\", \"paths\"]}"
+  },
+  {
+    "chunk_id": "b2514eb692761baa",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "27f89b26299b11c4",
+    "path": "$.openapi",
+    "kind": "value",
+    "text": "3.0.3"
+  },
+  {
+    "chunk_id": "1af91094619b38f9",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "27f89b26299b11c4",
+    "path": "$.info",
+    "kind": "object",
+    "text": "{\n  \"title\": \"Swagger Petstore - Sample\",\n  \"version\": \"1.0.0\",\n  \"description\": \"A minimal Petstore-style sample spec used for local development and testing.\"\n}"
+  },
+  {
+    "chunk_id": "ab205451c661d8e4",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "27f89b26299b11c4",
+    "path": "$.servers[0]",
+    "kind": "object",
+    "text": "{\n  \"url\": \"https://petstore.example.com/v1\"\n}"
+  },
+  {
+    "chunk_id": "91db0a075a4105ab",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "27f89b26299b11c4",
+    "path": "$.components",
+    "kind": "object",
+    "text": "{\n  \"securitySchemes\": {\n    \"BearerAuth\": {\n      \"type\": \"http\",\n      \"scheme\": \"bearer\",\n      \"bearerFormat\": \"JWT\"\n    }\n  },\n  \"schemas\": {\n    \"Pet\": {\n      \"type\": \"object\",\n      \"required\": [\n        \"id\",\n        \"name\"\n      ],\n      \"properties\": {\n        \"id\": {\n          \"type\": \"integer\",\n          \"format\": \"int64\"\n        },\n        \"name\": {\n          \"type\": \"string\"\n        },\n        \"tag\": {\n          \"type\": \"string\"\n        }\n      }\n    },\n    \"Error\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"code\": {\n          \"type\": \"integer\"\n        },\n        \"message\": {\n          \"type\": \"string\"\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "chunk_id": "6c91dbebcc926b54",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "27f89b26299b11c4",
+    "path": "$.security[0]",
+    "kind": "object",
+    "text": "{\n  \"BearerAuth\": []\n}"
+  },
+  {
+    "chunk_id": "6c7de2ce3647be77",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "27f89b26299b11c4",
+    "path": "$.paths",
+    "kind": "object_anchor",
+    "text": "{\"keys\": [\"/pets\", \"/pets/{petId}\"]}"
+  },
+  {
+    "chunk_id": "50ac040569d49433",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "6c7de2ce3647be77",
+    "path": "$.paths./pets",
+    "kind": "object_anchor",
+    "text": "{\"keys\": [\"get\", \"post\"]}"
+  },
+  {
+    "chunk_id": "6beb87f79b852417",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "50ac040569d49433",
+    "path": "$.paths./pets.get",
+    "kind": "object",
+    "text": "{\n  \"operationId\": \"listPets\",\n  \"summary\": \"List all pets\",\n  \"tags\": [\n    \"pets\"\n  ],\n  \"security\": [],\n  \"parameters\": [\n    {\n      \"name\": \"limit\",\n      \"in\": \"query\",\n      \"required\": false,\n      \"schema\": {\n        \"type\": \"integer\",\n        \"default\": 20\n      },\n      \"description\": \"Maximum number of pets to return\"\n    }\n  ],\n  \"responses\": {\n    \"200\": {\n      \"description\": \"A paged array of pets\",\n      \"content\": {\n        \"application/json\": {\n          \"schema\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/Pet\"\n            }\n          }\n        }\n      }\n    },\n    \"400\": {\n      \"description\": \"Invalid request\",\n      \"content\": {\n        \"application/json\": {\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/Error\"\n          }\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "chunk_id": "c19039ca0f8f9141",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "50ac040569d49433",
+    "path": "$.paths./pets.post",
+    "kind": "object",
+    "text": "{\n  \"operationId\": \"createPet\",\n  \"summary\": \"Create a pet\",\n  \"tags\": [\n    \"pets\"\n  ],\n  \"requestBody\": {\n    \"required\": true,\n    \"content\": {\n      \"application/json\": {\n        \"schema\": {\n          \"$ref\": \"#/components/schemas/Pet\"\n        }\n      }\n    }\n  },\n  \"responses\": {\n    \"201\": {\n      \"description\": \"Pet created\",\n      \"content\": {\n        \"application/json\": {\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/Pet\"\n          }\n        }\n      }\n    },\n    \"400\": {\n      \"description\": \"Invalid input\",\n      \"content\": {\n        \"application/json\": {\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/Error\"\n          }\n        }\n      }\n    },\n    \"401\": {\n      \"description\": \"Unauthorized\"\n    }\n  }\n}"
+  },
+  {
+    "chunk_id": "123875f1a62873d5",
+    "document_id": "42a2cc7a6566a2028d2f3000",
+    "parent_chunk_id": "6c7de2ce3647be77",
+    "path": "$.paths./pets/{petId}",
+    "kind": "object",
+    "text": "{\n  \"get\": {\n    \"operationId\": \"getPetById\",\n    \"summary\": \"Get a pet by ID\",\n    \"tags\": [\n      \"pets\"\n    ],\n    \"security\": [],\n    \"parameters\": [\n      {\n        \"name\": \"petId\",\n        \"in\": \"path\",\n        \"required\": true,\n        \"schema\": {\n          \"type\": \"integer\"\n        }\n      }\n    ],\n    \"responses\": {\n      \"200\": {\n        \"description\": \"The requested pet\",\n        \"content\": {\n          \"application/json\": {\n            \"schema\": {\n              \"$ref\": \"#/components/schemas/Pet\"\n            }\n          }\n        }\n      },\n      \"404\": {\n        \"description\": \"Pet not found\",\n        \"content\": {\n          \"application/json\": {\n            \"schema\": {\n              \"$ref\": \"#/components/schemas/Error\"\n            }\n          }\n        }\n      }\n    }\n  },\n  \"delete\": {\n    \"operationId\": \"deletePet\",\n    \"summary\": \"Delete a pet\",\n    \"tags\": [\n      \"pets\"\n    ],\n    \"parameters\": [\n      {\n        \"name\": \"petId\",\n        \"in\": \"path\",\n        \"required\": true,\n        \"schema\": {\n          \"type\": \"integer\"\n        }\n      }\n    ],\n    \"responses\": {\n      \"204\": {\n        \"description\": \"Pet deleted\"\n      },\n      \"404\": {\n        \"description\": \"Pet not found\"\n      },\n      \"401\": {\n        \"description\": \"Unauthorized\"\n      }\n    }\n  }\n}"
+  }
+]

@@ -1,0 +1,159 @@
+{
+  "boundary_values": {
+    "integer": {
+      "description": "Boundary values to test for integer parameters/fields",
+      "values": [
+        0,
+        -1,
+        1,
+        2147483647,
+        -2147483648,
+        9999999999
+      ]
+    },
+    "number": {
+      "description": "Boundary values to test for floating point parameters/fields",
+      "values": [
+        0.0,
+        -0.1,
+        0.1,
+        1.7976931348623157e+308,
+        -1.7976931348623157e+308
+      ]
+    },
+    "string": {
+      "description": "Boundary values to test for string parameters/fields",
+      "values": [
+        "",
+        "a",
+        "   ",
+        "😀",
+        "<script>alert(1)</script>"
+      ]
+    },
+    "string_lengths": {
+      "description": "Length-based boundary cases; generate the actual string at test-generation time using max_length from the schema (fall back to 255 when unspecified)",
+      "cases": [
+        "empty",
+        "single_character",
+        "max_length",
+        "max_length_plus_one"
+      ]
+    },
+    "array": {
+      "description": "Boundary values to test for array parameters/fields",
+      "values": [
+        [],
+        [
+          "single_item"
+        ]
+      ],
+      "cases": [
+        "empty",
+        "single_item",
+        "max_items",
+        "max_items_plus_one"
+      ]
+    },
+    "date": {
+      "description": "Boundary values to test for date/date-time fields",
+      "values": [
+        "1970-01-01",
+        "9999-12-31",
+        "0000-00-00",
+        "not-a-date"
+      ]
+    },
+    "enum": {
+      "description": "Boundary cases for enum fields",
+      "cases": [
+        "first_value",
+        "last_value",
+        "value_not_in_enum"
+      ]
+    },
+    "pagination": {
+      "description": "Boundary values for page/limit/offset query parameters",
+      "values": {
+        "page": [
+          0,
+          1,
+          -1,
+          999999999
+        ],
+        "limit": [
+          0,
+          1,
+          100,
+          100000
+        ],
+        "offset": [
+          0,
+          -1,
+          999999999
+        ]
+      }
+    },
+    "uuid": {
+      "description": "Boundary/edge cases for UUID path parameters and fields",
+      "values": [
+        "00000000-0000-0000-0000-000000000000",
+        "not-a-uuid",
+        ""
+      ],
+      "cases": [
+        "nil_uuid",
+        "malformed",
+        "empty"
+      ]
+    },
+    "phone_number": {
+      "description": "Boundary/edge cases for phone number fields",
+      "values": [
+        "+10000000000",
+        "123",
+        "+1 (555) 555-5555 ext. 99999",
+        "not-a-phone"
+      ]
+    },
+    "currency_amount": {
+      "description": "Boundary values for monetary amount fields (assume 2 decimal places)",
+      "values": [
+        0.0,
+        0.01,
+        -0.01,
+        999999999999.99,
+        1e+20
+      ]
+    },
+    "file_upload_size": {
+      "description": "Boundary values for file upload size limits, in bytes",
+      "values": [
+        0,
+        1,
+        10485760,
+        10485761
+      ]
+    },
+    "timezone_offset": {
+      "description": "Boundary cases for timezone/UTC-offset fields",
+      "values": [
+        "+00:00",
+        "+14:00",
+        "-12:00",
+        "+15:00",
+        "Z"
+      ]
+    },
+    "email": {
+      "description": "Boundary/edge cases for email address fields",
+      "values": [
+        "a@b.co",
+        "not-an-email",
+        "user@",
+        "@domain.com",
+        "user+tag@example.com"
+      ]
+    }
+  }
+}

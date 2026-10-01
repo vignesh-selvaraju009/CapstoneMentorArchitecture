@@ -1,0 +1,36 @@
+# Environment / secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+
+# Generated artifacts
+generated_tests/*
+!generated_tests/.gitkeep
+generated_postman/*
+!generated_postman/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Storage / reports (runtime data)
+storage/data/
+reports/output/
+
+# FAISS index artifacts
+knowledge_base/faiss_index*
+
+# Allure results
+allure-results/
+allure-report/
+
+# OS / editor
+.DS_Store
+.vscode/*
+!.vscode/settings.json

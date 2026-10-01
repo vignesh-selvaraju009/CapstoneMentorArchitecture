@@ -1,0 +1,360 @@
+[
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-happy-get-single",
+    "category": "Happy Path",
+    "methods": ["GET"],
+    "title": "Fetch a single resource by valid ID",
+    "description": "Call the endpoint with a valid path parameter identifying an existing resource. Expect 200 and a response body matching the documented schema."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-happy-list-filtered",
+    "category": "Happy Path",
+    "methods": ["GET"],
+    "title": "List resources with valid filter/query parameters",
+    "description": "Call a collection endpoint with valid, documented query parameters (filters, sort, pagination). Expect 200 and results consistent with the applied filters."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-happy-create",
+    "category": "Happy Path",
+    "methods": ["POST"],
+    "title": "Create resource with valid payload",
+    "description": "Send a fully valid request body containing all required fields. Expect the documented success status (200/201) and a response body reflecting the created resource, including a generated identifier."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-happy-update-full",
+    "category": "Happy Path",
+    "methods": ["PUT"],
+    "title": "Full update replaces resource",
+    "description": "Send a complete valid representation of the resource. Expect 200/204 and the resource fully replaced with the new values on subsequent GET."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-happy-update-partial",
+    "category": "Happy Path",
+    "methods": ["PATCH"],
+    "title": "Partial update changes only targeted fields",
+    "description": "Send a partial payload with a subset of fields. Expect 200 and confirm unrelated fields remain unchanged."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-happy-delete",
+    "category": "Happy Path",
+    "methods": ["DELETE"],
+    "title": "Delete an existing resource",
+    "description": "Delete a resource that exists. Expect 200/204 and confirm a subsequent GET on the same resource returns 404."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-neg-not-found",
+    "category": "Negative",
+    "methods": ["GET", "PUT", "PATCH", "DELETE"],
+    "title": "Non-existent identifier returns 404",
+    "description": "Call the endpoint with a path parameter that does not match any existing resource (e.g. a very large or random id/UUID). Expect 404 Not Found, not a 500 error."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-neg-missing-required",
+    "category": "Negative",
+    "methods": ["POST", "PUT", "PATCH"],
+    "title": "Missing required field rejected",
+    "description": "Omit a required field from the request body. Expect 400 Bad Request with a validation error identifying the missing field."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-neg-wrong-type",
+    "category": "Negative",
+    "methods": ["POST", "PUT", "PATCH"],
+    "title": "Wrong field data type rejected",
+    "description": "Send a value of the wrong type for a field (e.g. string instead of integer). Expect 400 Bad Request with a schema validation error."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-neg-duplicate-unique",
+    "category": "Negative",
+    "methods": ["POST"],
+    "title": "Duplicate unique field rejected",
+    "description": "Attempt to create a resource with a value that must be unique (e.g. email, username) that already exists. Expect 409 Conflict or 400 with a clear error message."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-neg-unsupported-content-type",
+    "category": "Negative",
+    "methods": ["POST", "PUT", "PATCH"],
+    "title": "Unsupported Content-Type rejected",
+    "description": "Send the request body with an unsupported Content-Type (e.g. text/plain instead of application/json). Expect 400 or 415 Unsupported Media Type."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-boundary-numeric",
+    "category": "Boundary",
+    "methods": ["GET", "POST", "PUT", "PATCH"],
+    "title": "Numeric field boundary values",
+    "description": "Test zero, negative, minimum, and maximum representable values for integer/number parameters and fields, plus one value just outside any documented min/max."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-boundary-string-length",
+    "category": "Boundary",
+    "methods": ["POST", "PUT", "PATCH"],
+    "title": "String length boundary values",
+    "description": "Test empty string, single character, exactly max-length, and max-length-plus-one for string fields with a documented maxLength."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-boundary-pagination",
+    "category": "Boundary",
+    "methods": ["GET"],
+    "title": "Pagination parameter boundary values",
+    "description": "Test page=0, page=-1, limit=0, and an extremely large limit/offset. Expect the API to clamp or reject rather than error or return unbounded results."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-schema-response",
+    "category": "Schema",
+    "methods": ["GET", "POST", "PUT", "PATCH"],
+    "title": "Response body matches documented schema",
+    "description": "Validate that every field in the response body matches the documented type, and that no undocumented required fields are missing."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-schema-nullable",
+    "category": "Schema",
+    "methods": ["GET"],
+    "title": "Nullable fields returned explicitly as null",
+    "description": "For fields marked nullable, verify the API returns an explicit null value rather than omitting the key when no value is set."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-auth-missing",
+    "category": "Authorization",
+    "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    "title": "Request without credentials rejected",
+    "description": "Call the endpoint with no Authorization header/credentials at all on a protected endpoint. Expect 401 Unauthorized."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-auth-wrong-role",
+    "category": "Authorization",
+    "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    "title": "Insufficient role/permissions rejected",
+    "description": "Call a protected endpoint using valid credentials that lack the required role/scope. Expect 403 Forbidden."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-edge-idempotency",
+    "category": "Edge",
+    "methods": ["POST"],
+    "title": "Idempotency key prevents duplicate creation",
+    "description": "Send the identical request twice with the same idempotency key. Expect the second response to return the original resource rather than creating a duplicate."
+  },
+  {
+    "kb_type": "test_pattern",
+    "id": "common-tp-edge-concurrent-write",
+    "category": "Edge",
+    "methods": ["PUT", "PATCH", "DELETE"],
+    "title": "Concurrent/stale write handling",
+    "description": "Update the same resource using stale data (e.g. no If-Match/ETag, or an outdated version). Verify the API either rejects the stale write or applies a consistent conflict-resolution rule."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api1-bola",
+    "category": "Security",
+    "owasp": "API1:2023 Broken Object Level Authorization",
+    "title": "Access another user's object by ID",
+    "description": "Authenticated as User A, request an object belonging to User B by changing the path/query identifier. Expect 403/404, never User B's data."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api2-broken-auth",
+    "category": "Security",
+    "owasp": "API2:2023 Broken Authentication",
+    "title": "Expired or malformed token rejected",
+    "description": "Send an expired, tampered, or malformed authentication token. Expect 401 Unauthorized, not a 500 error or silent acceptance."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api3-property-auth",
+    "category": "Security",
+    "owasp": "API3:2023 Broken Object Property Level Authorization",
+    "title": "Mass assignment of restricted fields",
+    "description": "Include restricted/admin-only fields (e.g. role, isAdmin, balance) in a create/update payload as a regular user. Verify they are ignored or rejected, not silently applied."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api4-resource-consumption",
+    "category": "Security",
+    "owasp": "API4:2023 Unrestricted Resource Consumption",
+    "title": "Excessive payload/pagination size",
+    "description": "Request an extremely large page size, or send an oversized request body/array. Expect the API to cap or reject the request rather than degrade or crash."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api5-function-auth",
+    "category": "Security",
+    "owasp": "API5:2023 Broken Function Level Authorization",
+    "title": "Access admin-only endpoint as regular user",
+    "description": "Call an administrative/privileged endpoint using a regular authenticated user's credentials. Expect 403 Forbidden."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api6-business-flows",
+    "category": "Security",
+    "owasp": "API6:2023 Unrestricted Access to Sensitive Business Flows",
+    "title": "Automated abuse of sensitive flows",
+    "description": "Rapidly repeat a sensitive business action (signup, coupon redemption, purchase) in an automated fashion. Expect rate limiting or additional friction, not unlimited automation."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api7-ssrf",
+    "category": "Security",
+    "owasp": "API7:2023 Server Side Request Forgery",
+    "title": "SSRF via user-supplied URL",
+    "description": "Supply an internal/loopback/metadata-service URL (e.g. http://169.254.169.254, http://localhost) in any field the server fetches or redirects to. Verify the server refuses to fetch internal/private addresses."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api8-misconfiguration",
+    "category": "Security",
+    "owasp": "API8:2023 Security Misconfiguration",
+    "title": "Verbose error messages leak internals",
+    "description": "Trigger an unhandled server error with malformed input. Verify the response does not leak stack traces, internal file paths, or framework/version details."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api9-inventory",
+    "category": "Security",
+    "owasp": "API9:2023 Improper Inventory Management",
+    "title": "Deprecated API version still reachable",
+    "description": "Probe for older/deprecated API versions (e.g. /v1/ when /v2/ is current). Verify deprecated versions are disabled or have equivalent security controls."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-api10-unsafe-consumption",
+    "category": "Security",
+    "owasp": "API10:2023 Unsafe Consumption of APIs",
+    "title": "Unsanitized data from third-party integration",
+    "description": "If the API consumes data from an upstream/third-party API, verify that data (e.g. HTML, script content, oversized fields) is sanitized/validated before being stored or rendered, not trusted blindly."
+  },
+  {
+    "kb_type": "security_rule",
+    "id": "common-sec-injection",
+    "category": "Security",
+    "owasp": "API8:2023 Security Misconfiguration",
+    "title": "Classic SQL/NoSQL injection payloads",
+    "description": "Submit payloads such as \"' OR '1'='1\", \"'; DROP TABLE users; --\", or NoSQL operator injection (e.g. {\"$ne\": null}) in string fields/parameters. Expect safe rejection or sanitization, never a 500 error or data exposure."
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "integer",
+    "description": "Boundary values to test for integer parameters/fields",
+    "values": [0, -1, 1, 2147483647, -2147483648, 9999999999]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "string",
+    "description": "Boundary values to test for string parameters/fields",
+    "values": ["", "a", "   ", "😀", "<script>alert(1)</script>"]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "email",
+    "description": "Boundary/edge cases for email address fields",
+    "values": ["a@b.co", "not-an-email", "user@", "@domain.com", "user+tag@example.com"]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "uuid",
+    "description": "Boundary/edge cases for UUID path parameters and fields",
+    "values": ["00000000-0000-0000-0000-000000000000", "not-a-uuid", ""],
+    "cases": ["nil_uuid", "malformed", "empty"]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "date",
+    "description": "Boundary values to test for date/date-time fields",
+    "values": ["1970-01-01", "9999-12-31", "0000-00-00", "not-a-date"]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "pagination",
+    "description": "Boundary values for page/limit/offset query parameters",
+    "values": {"page": [0, 1, -1, 999999999], "limit": [0, 1, 100, 100000], "offset": [0, -1, 999999999]}
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "array",
+    "description": "Boundary values to test for array parameters/fields",
+    "values": [[], ["single_item"]],
+    "cases": ["empty", "single_item", "max_items", "max_items_plus_one"]
+  },
+  {
+    "kb_type": "boundary_value",
+    "type_name": "enum",
+    "description": "Boundary cases for enum fields",
+    "cases": ["first_value", "last_value", "value_not_in_enum"]
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "approved",
+    "title": "[Common Dataset] Non-existent identifier returns 404",
+    "description": "Call the endpoint with a random/non-existent id. Expect 404, not 500.",
+    "priority": "High",
+    "category": "Negative",
+    "expected_status": 404,
+    "expected_response": "Response matches documented behavior for status 404.",
+    "assertions": ["Response status code is 404", "Response body includes a not-found error message"],
+    "notes": "Confirmed correct behavior across multiple APIs; keep as a default reference pattern."
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "approved",
+    "title": "[Common Dataset] Mass assignment of restricted fields",
+    "description": "Attempt to set an admin-only field (e.g. isAdmin) via a regular create/update request.",
+    "priority": "High",
+    "category": "Security",
+    "expected_status": 201,
+    "expected_response": "Restricted field is ignored/stripped, not applied.",
+    "assertions": ["Response status code is 201", "Created/updated resource does not reflect the restricted field value"],
+    "notes": null
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "rejected",
+    "title": "[Common Dataset] Fixed rate-limit threshold assumption",
+    "description": "Original template assumed a universal fixed rate limit (e.g. 100 req/min) for every endpoint.",
+    "priority": "Low",
+    "category": "Security",
+    "expected_status": 429,
+    "expected_response": "Response matches documented behavior for status 429.",
+    "assertions": ["Response status code is 429"],
+    "notes": "Rejected: rate limits vary per plan/tier/endpoint; needs per-API configuration rather than a hardcoded assumption."
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "modified",
+    "title": "[Common Dataset] Nullable field returns null, not omitted",
+    "description": "GET a resource whose optional field was never set.",
+    "priority": "Medium",
+    "category": "Schema",
+    "expected_status": 200,
+    "expected_response": "Response body explicitly includes the key with value null.",
+    "assertions": ["Response status code is 200", "Response body contains the optional key with value null"],
+    "notes": "Modified: original assertion only checked status code; added explicit null-vs-omitted check."
+  },
+  {
+    "kb_type": "historical_feedback",
+    "action": "approved",
+    "title": "[Common Dataset] Idempotency key prevents duplicate creation",
+    "description": "POST the same payload twice with an identical Idempotency-Key header.",
+    "priority": "High",
+    "category": "Edge",
+    "expected_status": 201,
+    "expected_response": "Second response references the same resource id as the first.",
+    "assertions": ["First call returns 201", "Second call returns the same resource id, not a new one"],
+    "notes": null
+  }
+]

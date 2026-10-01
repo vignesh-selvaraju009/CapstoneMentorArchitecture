@@ -1,0 +1,70 @@
+{
+  "document_title": "Library Management API - Backend Business Rules Reference",
+  "domain": "library_management",
+  "description": "Business rules, field validation constraints, and error catalog for the Library Management backend that are not fully expressed in the interface schema alone. Intended to be ingested and chunked so the retrieval layer can surface concrete, endpoint-specific context when generating verification scenarios.",
+  "resources": {
+    "books": {
+      "endpoints": ["/books", "/books/{bookId}"],
+      "field_constraints": {
+        "isbn": "Must match pattern NNN-NNNNNNNNNN (3 digits, dash, 10 digits). Duplicate ISBNs are rejected on create.",
+        "title": "Required, 1 to 300 characters.",
+        "totalCopies": "Integer, minimum 1. availableCopies can never exceed totalCopies.",
+        "genre": "Must be one of the documented enum values; unrecognized genres are rejected, not silently accepted."
+      },
+      "business_rules": [
+        "Creating a book with an ISBN that already exists in the catalog returns 409, not a duplicate record.",
+        "availableCopies is decremented automatically when a loan is created and incremented when a loan is returned; clients cannot set it directly through the create/update request body.",
+        "A book cannot be deleted while it has one or more active or overdue loans; the request must return 409 and the book must remain unchanged.",
+        "Only accounts with the librarian role may create, update, or delete books; member-role accounts calling these operations must receive 403."
+      ]
+    },
+    "members": {
+      "endpoints": ["/members", "/members/{memberId}"],
+      "field_constraints": {
+        "email": "Required, unique across all members. Duplicate registration attempts are rejected.",
+        "status": "One of active, suspended, expired. Only librarian-role accounts may change this field via update requests."
+      },
+      "business_rules": [
+        "A member in suspended or expired status cannot be used to create a new loan, regardless of book availability.",
+        "activeLoanCount is derived from open loan records and must reflect only loans currently in active or overdue status.",
+        "Members may update their own fullName but not their own status field; attempting to self-escalate status must be rejected with 403."
+      ]
+    },
+    "loans": {
+      "endpoints": ["/loans", "/loans/{loanId}", "/loans/{loanId}/return"],
+      "field_constraints": {
+        "dueDate": "Set automatically to 21 days after borrowedAt; not accepted as client input on create.",
+        "status": "Transitions strictly active -> returned or active -> overdue -> returned. A returned loan cannot transition to any other status."
+      },
+      "business_rules": [
+        "A member may not have more than 5 concurrently active or overdue loans; the 6th create-loan request must return 409 with a loan-limit error, not a generic validation error.",
+        "Creating a loan for a book with availableCopies of 0 returns 409; it must not create a loan and then leave availableCopies negative.",
+        "Returning an already-returned loan is idempotent from the caller's perspective in intent but the API must reject the second return call with 409 rather than silently succeeding twice.",
+        "A loan becomes overdue automatically once dueDate has passed without a return; overdue loans still count toward the 5-loan active limit.",
+        "Overdue loans accrue a fine of 0.25 currency units per day late, capped at 10.00 per loan; the fine amount is computed at return time, not stored on the loan record ahead of time."
+      ]
+    }
+  },
+  "authorization_model": {
+    "roles": ["librarian", "member"],
+    "notes": [
+      "librarian: full read/write access to books, members, and loans, including status changes.",
+      "member: read-only access to the book catalog, read/write access to their own loan records only, cannot view or modify other members' data.",
+      "Every request must carry a bearer token; requests without a token or with an expired/malformed token must return 401, never a 500 error."
+    ]
+  },
+  "error_catalog": [
+    {"code": "BOOK_NOT_FOUND", "http_status": 404, "meaning": "No book exists with the supplied bookId."},
+    {"code": "MEMBER_NOT_FOUND", "http_status": 404, "meaning": "No member exists with the supplied memberId."},
+    {"code": "LOAN_NOT_FOUND", "http_status": 404, "meaning": "No loan exists with the supplied loanId."},
+    {"code": "DUPLICATE_ISBN", "http_status": 409, "meaning": "A book with this ISBN is already in the catalog."},
+    {"code": "DUPLICATE_EMAIL", "http_status": 409, "meaning": "A member with this email is already registered."},
+    {"code": "BOOK_UNAVAILABLE", "http_status": 409, "meaning": "availableCopies is 0 for the requested book."},
+    {"code": "MEMBER_SUSPENDED", "http_status": 409, "meaning": "Member status is suspended or expired and cannot borrow."},
+    {"code": "LOAN_LIMIT_EXCEEDED", "http_status": 409, "meaning": "Member already has 5 active or overdue loans."},
+    {"code": "BOOK_HAS_ACTIVE_LOANS", "http_status": 409, "meaning": "Book cannot be deleted while active/overdue loans reference it."},
+    {"code": "ALREADY_RETURNED", "http_status": 409, "meaning": "Loan status is already returned."},
+    {"code": "VALIDATION_ERROR", "http_status": 400, "meaning": "One or more request body fields failed schema or format validation."},
+    {"code": "FORBIDDEN_ROLE", "http_status": 403, "meaning": "The authenticated account's role does not permit this operation."}
+  ]
+}

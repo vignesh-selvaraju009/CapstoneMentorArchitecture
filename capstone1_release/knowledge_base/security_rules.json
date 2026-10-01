@@ -1,0 +1,207 @@
+{
+  "rules": [
+    {
+      "id": "owasp-api1-bola",
+      "category": "Security",
+      "owasp": "API1:2023 Broken Object Level Authorization",
+      "title": "Access another user's object by ID",
+      "description": "Attempt to access/modify a resource belonging to another user by changing the path/query ID while authenticated as a different user. Expect 403/404, never the other user's data."
+    },
+    {
+      "id": "owasp-api2-broken-auth",
+      "category": "Security",
+      "owasp": "API2:2023 Broken Authentication",
+      "title": "Expired or malformed token",
+      "description": "Send an expired, tampered, or malformed auth token. Expect 401 Unauthorized."
+    },
+    {
+      "id": "owasp-api3-broken-property-auth",
+      "category": "Security",
+      "owasp": "API3:2023 Broken Object Property Level Authorization",
+      "title": "Mass assignment of restricted fields",
+      "description": "Include extra/restricted fields (e.g. role, isAdmin) in a create/update payload that the client should not be able to set. Verify they are ignored or rejected, not silently applied."
+    },
+    {
+      "id": "owasp-api4-resource-consumption",
+      "category": "Security",
+      "owasp": "API4:2023 Unrestricted Resource Consumption",
+      "title": "Excessive pagination / payload size",
+      "description": "Request an extremely large page size or oversized request body. Expect the API to cap/reject rather than degrade or crash."
+    },
+    {
+      "id": "owasp-api5-function-auth",
+      "category": "Security",
+      "owasp": "API5:2023 Broken Function Level Authorization",
+      "title": "Access admin-only endpoint as regular user",
+      "description": "Call an admin/privileged endpoint using a regular user's credentials. Expect 403 Forbidden."
+    },
+    {
+      "id": "owasp-api7-ssrf",
+      "category": "Security",
+      "owasp": "API7:2023 Server Side Request Forgery",
+      "title": "SSRF via user-supplied URL",
+      "description": "If the endpoint accepts a URL (e.g. webhook, avatar fetch), supply an internal/loopback address and verify the server does not fetch it."
+    },
+    {
+      "id": "owasp-api8-misconfiguration",
+      "category": "Security",
+      "owasp": "API8:2023 Security Misconfiguration",
+      "title": "Verbose error messages",
+      "description": "Trigger a server error (e.g. invalid input) and verify the response does not leak stack traces, internal paths, or framework versions."
+    },
+    {
+      "id": "owasp-api10-unsafe-consumption",
+      "category": "Security",
+      "owasp": "API10:2023 Unsafe Consumption of APIs",
+      "title": "Injection via headers",
+      "description": "Submit script/command injection payloads (e.g. XSS, CRLF injection) in header values. Verify they are rejected or sanitized, not reflected unescaped."
+    },
+    {
+      "id": "sql-injection-classic",
+      "category": "Security",
+      "owasp": "API8:2023 related - Injection",
+      "title": "Classic SQL injection strings",
+      "description": "Submit payloads such as \"' OR '1'='1\", \"'; DROP TABLE users; --\" in string fields/parameters. Expect safe rejection, never a 500 error or unexpected data exposure."
+    },
+    {
+      "id": "rate-limiting",
+      "category": "Security",
+      "owasp": "API4:2023 Unrestricted Resource Consumption",
+      "title": "Rate limit enforcement",
+      "description": "Burst requests beyond documented rate limits. Expect 429 Too Many Requests with a Retry-After header where documented."
+    },
+    {
+      "id": "sample-sec-api6-mass-assign-inventory",
+      "category": "Security",
+      "owasp": "API6:2023 Unrestricted Access to Sensitive Business Flows",
+      "title": "Automated bulk creation abuse",
+      "description": "Rapidly issue many creation requests in a short window (e.g. account signups, coupon redemptions). Expect rate limiting or CAPTCHA-style friction, not unlimited automation."
+    },
+    {
+      "id": "sample-sec-api8-misconfig",
+      "category": "Security",
+      "owasp": "API8:2023 Security Misconfiguration",
+      "title": "Verbose stack trace on server error",
+      "description": "Trigger an unhandled server error (e.g. malformed input causing a 500). Verify the response does not leak stack traces, internal paths, or framework versions."
+    },
+    {
+      "id": "sample-sec-api9-inventory",
+      "category": "Security",
+      "owasp": "API9:2023 Improper Inventory Management",
+      "title": "Deprecated/legacy API version still reachable",
+      "description": "Probe for old API versions (e.g. /v1/ when /v2/ is current). Verify deprecated versions are disabled or have equivalent security controls."
+    },
+    {
+      "id": "sample-sec-cors",
+      "category": "Security",
+      "owasp": "API8:2023 Security Misconfiguration",
+      "title": "Overly permissive CORS policy",
+      "description": "Send a request with an arbitrary Origin header. Verify Access-Control-Allow-Origin is not '*' combined with credentials, and only trusted origins are reflected."
+    },
+    {
+      "id": "sample-sec-jwt-alg-none",
+      "category": "Security",
+      "owasp": "API2:2023 Broken Authentication",
+      "title": "JWT 'alg: none' acceptance",
+      "description": "Send a JWT with its algorithm header set to 'none' and signature stripped. Expect the token to be rejected as invalid/unauthenticated."
+    },
+    {
+      "id": "custom-d068e504",
+      "category": "Functional",
+      "owasp": "",
+      "title": "",
+      "description": ""
+    },
+    {
+      "id": "KB-006",
+      "category": "Security",
+      "owasp": "",
+      "title": "",
+      "description": ""
+    },
+    {
+      "id": "KB-002",
+      "category": "Security",
+      "owasp": "",
+      "title": "",
+      "description": ""
+    },
+    {
+      "id": "common-sec-api1-bola",
+      "category": "Security",
+      "owasp": "API1:2023 Broken Object Level Authorization",
+      "title": "Access another user's object by ID",
+      "description": "Authenticated as User A, request an object belonging to User B by changing the path/query identifier. Expect 403/404, never User B's data."
+    },
+    {
+      "id": "common-sec-api2-broken-auth",
+      "category": "Security",
+      "owasp": "API2:2023 Broken Authentication",
+      "title": "Expired or malformed token rejected",
+      "description": "Send an expired, tampered, or malformed authentication token. Expect 401 Unauthorized, not a 500 error or silent acceptance."
+    },
+    {
+      "id": "common-sec-api3-property-auth",
+      "category": "Security",
+      "owasp": "API3:2023 Broken Object Property Level Authorization",
+      "title": "Mass assignment of restricted fields",
+      "description": "Include restricted/admin-only fields (e.g. role, isAdmin, balance) in a create/update payload as a regular user. Verify they are ignored or rejected, not silently applied."
+    },
+    {
+      "id": "common-sec-api4-resource-consumption",
+      "category": "Security",
+      "owasp": "API4:2023 Unrestricted Resource Consumption",
+      "title": "Excessive payload/pagination size",
+      "description": "Request an extremely large page size, or send an oversized request body/array. Expect the API to cap or reject the request rather than degrade or crash."
+    },
+    {
+      "id": "common-sec-api5-function-auth",
+      "category": "Security",
+      "owasp": "API5:2023 Broken Function Level Authorization",
+      "title": "Access admin-only endpoint as regular user",
+      "description": "Call an administrative/privileged endpoint using a regular authenticated user's credentials. Expect 403 Forbidden."
+    },
+    {
+      "id": "common-sec-api6-business-flows",
+      "category": "Security",
+      "owasp": "API6:2023 Unrestricted Access to Sensitive Business Flows",
+      "title": "Automated abuse of sensitive flows",
+      "description": "Rapidly repeat a sensitive business action (signup, coupon redemption, purchase) in an automated fashion. Expect rate limiting or additional friction, not unlimited automation."
+    },
+    {
+      "id": "common-sec-api7-ssrf",
+      "category": "Security",
+      "owasp": "API7:2023 Server Side Request Forgery",
+      "title": "SSRF via user-supplied URL",
+      "description": "Supply an internal/loopback/metadata-service URL (e.g. http://169.254.169.254, http://localhost) in any field the server fetches or redirects to. Verify the server refuses to fetch internal/private addresses."
+    },
+    {
+      "id": "common-sec-api8-misconfiguration",
+      "category": "Security",
+      "owasp": "API8:2023 Security Misconfiguration",
+      "title": "Verbose error messages leak internals",
+      "description": "Trigger an unhandled server error with malformed input. Verify the response does not leak stack traces, internal file paths, or framework/version details."
+    },
+    {
+      "id": "common-sec-api9-inventory",
+      "category": "Security",
+      "owasp": "API9:2023 Improper Inventory Management",
+      "title": "Deprecated API version still reachable",
+      "description": "Probe for older/deprecated API versions (e.g. /v1/ when /v2/ is current). Verify deprecated versions are disabled or have equivalent security controls."
+    },
+    {
+      "id": "common-sec-api10-unsafe-consumption",
+      "category": "Security",
+      "owasp": "API10:2023 Unsafe Consumption of APIs",
+      "title": "Unsanitized data from third-party integration",
+      "description": "If the API consumes data from an upstream/third-party API, verify that data (e.g. HTML, script content, oversized fields) is sanitized/validated before being stored or rendered, not trusted blindly."
+    },
+    {
+      "id": "common-sec-injection",
+      "category": "Security",
+      "owasp": "API8:2023 Security Misconfiguration",
+      "title": "Classic SQL/NoSQL injection payloads",
+      "description": "Submit payloads such as \"' OR '1'='1\", \"'; DROP TABLE users; --\", or NoSQL operator injection (e.g. {\"$ne\": null}) in string fields/parameters. Expect safe rejection or sanitization, never a 500 error or data exposure."
+    }
+  ]
+}
