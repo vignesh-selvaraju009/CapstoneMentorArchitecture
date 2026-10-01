@@ -17,14 +17,17 @@ import json
 import re
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from typing import Any, TypeAlias, cast
 from urllib.parse import parse_qs, urlsplit
 
-SEED_PETS: dict[int, dict] = {
+Pet: TypeAlias = dict[str, Any]
+
+SEED_PETS: dict[int, Pet] = {
     1: {"id": 1, "name": "Fido", "tag": "dog"},
     2: {"id": 2, "name": "Whiskers", "tag": "cat"},
 }
-PETS: dict[int, dict] = {k: dict(v) for k, v in SEED_PETS.items()}
-_NEXT_ID = max(SEED_PETS) + 1
+_pets: dict[int, Pet] = {k: dict(v) for k, v in SEED_PETS.items()}
+_next_id = max(SEED_PETS) + 1
 
 _PET_ID_RE = re.compile(r"^/pets/([^/?]+)/?$")
 
@@ -33,9 +36,9 @@ class PetsHandler(BaseHTTPRequestHandler):
     def _reset_state(self) -> None:
         # Each generated test makes exactly one request and expects a fresh,
         # independent server state (no shared mutation across test files).
-        global PETS, _NEXT_ID
-        PETS = {k: dict(v) for k, v in SEED_PETS.items()}
-        _NEXT_ID = max(SEED_PETS) + 1
+        global _next_id, _pets
+        _pets = {k: dict(v) for k, v in SEED_PETS.items()}
+        _next_id = max(SEED_PETS) + 1
 
     def _pet_id(self) -> int | None:
         match = _PET_ID_RE.match(urlsplit(self.path).path)
@@ -46,7 +49,7 @@ class PetsHandler(BaseHTTPRequestHandler):
         except ValueError:
             return None
 
-    def _send_json(self, status: int, body: dict) -> None:
+    def _send_json(self, status: int, body: Any) -> None:
         payload = json.dumps(body).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
@@ -75,12 +78,12 @@ class PetsHandler(BaseHTTPRequestHandler):
             if limit < 0:
                 self._send_json(400, {"code": 400, "message": "invalid limit"})
                 return
-            pets = list(PETS.values())[:limit]
+            pets = list(_pets.values())[:limit]
             self._send_json(200, pets)
             return
 
         pet_id = self._pet_id()
-        pet = PETS.get(pet_id) if pet_id is not None else None
+        pet = _pets.get(pet_id) if pet_id is not None else None
         if pet is None:
             self._send_json(404, {"code": 404, "message": "pet not found"})
             return
@@ -88,23 +91,27 @@ class PetsHandler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:  # noqa: N802
         self._reset_state()
-        global _NEXT_ID
+        global _next_id
         if not self._authorized():
             self._send_json(401, {"code": 401, "message": "unauthorized"})
             return
         length = int(self.headers.get("Content-Length", 0) or 0)
         raw_body = self.rfile.read(length) if length else b""
         try:
-            body = json.loads(raw_body) if raw_body else {}
+            parsed_body: Any = json.loads(raw_body) if raw_body else {}
         except json.JSONDecodeError:
             self._send_json(400, {"code": 400, "message": "invalid JSON body"})
             return
-        if not isinstance(body, dict) or not body.get("name"):
+        if not isinstance(parsed_body, dict):
             self._send_json(400, {"code": 400, "message": "name is required"})
             return
-        pet = {"id": _NEXT_ID, "name": body["name"], "tag": body.get("tag")}
-        PETS[_NEXT_ID] = pet
-        _NEXT_ID += 1
+        body = cast(dict[str, Any], parsed_body)
+        if not body.get("name"):
+            self._send_json(400, {"code": 400, "message": "name is required"})
+            return
+        pet: Pet = {"id": _next_id, "name": body["name"], "tag": body.get("tag")}
+        _pets[_next_id] = pet
+        _next_id += 1
         self._send_json(201, pet)
 
     def do_DELETE(self) -> None:  # noqa: N802
@@ -113,14 +120,14 @@ class PetsHandler(BaseHTTPRequestHandler):
             self._send_json(401, {"code": 401, "message": "unauthorized"})
             return
         pet_id = self._pet_id()
-        if pet_id is None or pet_id not in PETS:
+        if pet_id is None or pet_id not in _pets:
             self._send_json(404, {"code": 404, "message": "pet not found"})
             return
-        del PETS[pet_id]
+        del _pets[pet_id]
         self.send_response(204)
         self.end_headers()
 
-    def log_message(self, format: str, *args) -> None:  # noqa: A002
+    def log_message(self, format: str, *args: object) -> None:  # noqa: A002
         pass  # keep console output clean
 
 
